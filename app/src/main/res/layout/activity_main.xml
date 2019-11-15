@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:screenOrientation = "landscape"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
@@ -17,10 +18,10 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/optionsButton"
+        android:id="@+id/settingsButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Options"
+        android:text="Settings"
         app:layout_constraintStart_toStartOf="@+id/newGameButton"
         app:layout_constraintTop_toBottomOf="@+id/newGameButton" />
 
@@ -29,6 +30,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Exit"
-        app:layout_constraintStart_toStartOf="@+id/optionsButton"
-        app:layout_constraintTop_toBottomOf="@+id/optionsButton" />
+        app:layout_constraintStart_toStartOf="@+id/settingsButton"
+        app:layout_constraintTop_toBottomOf="@+id/settingsButton" />
 </androidx.constraintlayout.widget.ConstraintLayout>
