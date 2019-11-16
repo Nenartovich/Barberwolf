@@ -5,6 +5,7 @@ import  androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 
 
@@ -13,6 +14,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
         final Button newGameButton = (Button) findViewById(R.id.newGameButton);
         Button settingsButton = (Button) findViewById(R.id.settingsButton);
@@ -21,7 +24,6 @@ public class MainActivity extends AppCompatActivity {
         newGameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Go to the new game screen
                 Intent intent = new Intent(MainActivity.this, GameField.class);
                 startActivity(intent);
             }
