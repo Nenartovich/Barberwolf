@@ -1,15 +1,16 @@
 package org.project.barberwolf;
 
+
 import android.graphics.Canvas;
 import android.view.SurfaceHolder;
 
-public class GrassThread extends Thread {
+public class GameThread extends Thread {
 
     private boolean running;
-    private GrassSurface gameSurface;
+    private GameSurface gameSurface;
     private SurfaceHolder surfaceHolder;
 
-    public GrassThread(GrassSurface gameSurface, SurfaceHolder surfaceHolder)  {
+    public GameThread(GameSurface gameSurface, SurfaceHolder surfaceHolder)  {
         this.gameSurface= gameSurface;
         this.surfaceHolder= surfaceHolder;
     }

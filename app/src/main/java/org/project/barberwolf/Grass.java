@@ -11,9 +11,9 @@ public class Grass extends GameObject {
     private int movingVectorX = -30;
     private int movingVectorY = 0;
 
-    private GrassSurface gameSurface;
+    private GameSurface gameSurface;
 
-    public Grass(GrassSurface gameSurface, Bitmap image, int x, int y) {
+    public Grass(GameSurface gameSurface, Bitmap image, int x, int y) {
         super(image, 1, 1, x, y);
 
         this.gameSurface= gameSurface;

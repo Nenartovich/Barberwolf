@@ -15,7 +15,7 @@ public class GameField extends AppCompatActivity {
 
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-        this.setContentView(new GrassSurface(this));
+        this.setContentView(new GameSurface(this));
     }
 
 }

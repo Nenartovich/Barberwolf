@@ -10,13 +10,12 @@ import android.view.SurfaceView;
 import java.util.ArrayList;
 import java.util.List;
 
-
-public class GrassSurface extends SurfaceView implements SurfaceHolder.Callback {
-    private GrassThread gameThread;
+public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
+    private GameThread gameThread;
 
     private final List<Grass> grassList = new ArrayList<Grass>();
 
-    public GrassSurface(Context context)  {
+    public GameSurface(Context context)  {
         super(context);
 
         this.setFocusable(true);
@@ -41,23 +40,28 @@ public class GrassSurface extends SurfaceView implements SurfaceHolder.Callback 
     // Implements method of SurfaceHolder.Callback
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        Bitmap chibiBitmap1 = BitmapFactory.decodeResource(this.getResources(),R.drawable.grass);
-        Grass chibi1 = new Grass(this,chibiBitmap1,0,this.getHeight() - chibiBitmap1.getHeight());
-        Grass chibi2 = new Grass(this,chibiBitmap1, chibiBitmap1.getWidth(),this.getHeight() - chibiBitmap1.getHeight());
-        Grass chibi3 = new Grass(this,chibiBitmap1,2*chibiBitmap1.getWidth(),this.getHeight() - chibiBitmap1.getHeight());
-        Grass chibi4 = new Grass(this,chibiBitmap1,3*chibiBitmap1.getWidth(),this.getHeight() - chibiBitmap1.getHeight());
-        Grass chibi5 = new Grass(this,chibiBitmap1,4*chibiBitmap1.getWidth(),this.getHeight() - chibiBitmap1.getHeight());
-        Grass chibi6 = new Grass(this,chibiBitmap1,5*chibiBitmap1.getWidth(),this.getHeight() - chibiBitmap1.getHeight());
-        System.out.println(chibi1.getWidth());
-        this.grassList.add(chibi1);
-        this.grassList.add(chibi2);
-        this.grassList.add(chibi3);
-        this.grassList.add(chibi4);
-        this.grassList.add(chibi5);
-        this.grassList.add(chibi6);
+        Bitmap grassBitmap = BitmapFactory.decodeResource(this.getResources(),R.drawable.grass);
+        Grass grass1 = new Grass(this, grassBitmap,0,this.getHeight()
+                - grassBitmap.getHeight());
+        Grass grass2 = new Grass(this, grassBitmap, grassBitmap.getWidth(),
+                this.getHeight() - grassBitmap.getHeight());
+        Grass grass3 = new Grass(this, grassBitmap,2*grassBitmap.getWidth(),
+                this.getHeight() - grassBitmap.getHeight());
+        Grass grass4 = new Grass(this, grassBitmap,3*grassBitmap.getWidth(),
+                this.getHeight() - grassBitmap.getHeight());
+        Grass grass5 = new Grass(this, grassBitmap,4*grassBitmap.getWidth(),
+                this.getHeight() - grassBitmap.getHeight());
+        Grass grass6 = new Grass(this, grassBitmap,5*grassBitmap.getWidth(),
+                this.getHeight() - grassBitmap.getHeight());
+        this.grassList.add(grass1);
+        this.grassList.add(grass2);
+        this.grassList.add(grass3);
+        this.grassList.add(grass4);
+        this.grassList.add(grass5);
+        this.grassList.add(grass6);
 
 
-        this.gameThread = new GrassThread(this, holder);
+        this.gameThread = new GameThread(this, holder);
         this.gameThread.setRunning(true);
         this.gameThread.start();
     }
