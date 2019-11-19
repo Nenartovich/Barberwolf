@@ -14,6 +14,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     private GameThread gameThread;
 
     private final List<Grass> grassList = new ArrayList<Grass>();
+    private Wolf wolf = null;
 
     public GameSurface(Context context)  {
         super(context);
@@ -27,6 +28,8 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
         for(Grass grassElement: grassList) {
             grassElement.update();
         }
+
+        wolf.update();
     }
 
     @Override
@@ -35,6 +38,8 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
         for(Grass grassElement: grassList)  {
             grassElement.draw(canvas);
         }
+
+        wolf.draw(canvas);
     }
 
     // Implements method of SurfaceHolder.Callback
@@ -60,6 +65,10 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
         this.grassList.add(grass5);
         this.grassList.add(grass6);
 
+        Bitmap wolfBitmap = BitmapFactory.decodeResource(this.getResources(),R.drawable.wolf);
+        Wolf newWolf = new Wolf(this, wolfBitmap,250,this.getHeight() -
+                grassBitmap.getHeight() - wolfBitmap.getHeight() / 4);
+        this.wolf = newWolf;
 
         this.gameThread = new GameThread(this, holder);
         this.gameThread.setRunning(true);
