@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -18,17 +19,20 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
 
     public GameSurface(Context context)  {
         super(context);
-
         this.setFocusable(true);
-
         this.getHolder().addCallback(this);
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        // TODO Realization of jump
+        return true;
     }
 
     public void update()  {
         for(Grass grassElement: grassList) {
             grassElement.update();
         }
-
         wolf.update();
     }
 
@@ -38,11 +42,9 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
         for(Grass grassElement: grassList)  {
             grassElement.draw(canvas);
         }
-
         wolf.draw(canvas);
     }
 
-    // Implements method of SurfaceHolder.Callback
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         Bitmap grassBitmap = BitmapFactory.decodeResource(this.getResources(),R.drawable.grass);
@@ -58,12 +60,24 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
                 this.getHeight() - grassBitmap.getHeight());
         Grass grass6 = new Grass(this, grassBitmap,5*grassBitmap.getWidth(),
                 this.getHeight() - grassBitmap.getHeight());
+        Grass grass7 = new Grass(this, grassBitmap,6*grassBitmap.getWidth(),
+                this.getHeight() - grassBitmap.getHeight());
+        Grass grass8 = new Grass(this, grassBitmap,7*grassBitmap.getWidth(),
+                this.getHeight() - grassBitmap.getHeight());
+        Grass grass9 = new Grass(this, grassBitmap,8*grassBitmap.getWidth(),
+                this.getHeight() - grassBitmap.getHeight());
+        Grass grass10 = new Grass(this, grassBitmap,9*grassBitmap.getWidth(),
+                this.getHeight() - grassBitmap.getHeight());
         this.grassList.add(grass1);
         this.grassList.add(grass2);
         this.grassList.add(grass3);
         this.grassList.add(grass4);
         this.grassList.add(grass5);
         this.grassList.add(grass6);
+        this.grassList.add(grass7);
+        this.grassList.add(grass8);
+        this.grassList.add(grass9);
+        this.grassList.add(grass10);
 
         Bitmap wolfBitmap = BitmapFactory.decodeResource(this.getResources(),R.drawable.wolf);
         Wolf newWolf = new Wolf(this, wolfBitmap,250,this.getHeight() -
@@ -75,21 +89,17 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
         this.gameThread.start();
     }
 
-    // Implements method of SurfaceHolder.Callback
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-
+        // Empty method
     }
 
-    // Implements method of SurfaceHolder.Callback
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
         boolean retry= true;
         while(retry) {
             try {
                 this.gameThread.setRunning(false);
-
-                // Parent thread must wait until the end of GameThread.
                 this.gameThread.join();
             }catch(InterruptedException e)  {
                 e.printStackTrace();

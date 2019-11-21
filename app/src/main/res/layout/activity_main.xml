@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="298dp"
         android:layout_marginTop="89dp"
-        android:text="New game"
+        android:text="@string/new_game"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -21,7 +21,7 @@
         android:id="@+id/settingsButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Settings"
+        android:text="@string/settings"
         app:layout_constraintStart_toStartOf="@+id/newGameButton"
         app:layout_constraintTop_toBottomOf="@+id/newGameButton" />
 
@@ -29,7 +29,7 @@
         android:id="@+id/exitButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Exit"
+        android:text="@string/exit"
         app:layout_constraintStart_toStartOf="@+id/settingsButton"
         app:layout_constraintTop_toBottomOf="@+id/settingsButton" />
 </androidx.constraintlayout.widget.ConstraintLayout>

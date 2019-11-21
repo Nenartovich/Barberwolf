@@ -1,6 +1,5 @@
 package org.project.barberwolf;
 
-
 import android.graphics.Canvas;
 import android.view.SurfaceHolder;
 
@@ -17,14 +16,10 @@ public class GameThread extends Thread {
 
     @Override
     public void run()  {
-
         while(running)  {
             Canvas canvas= null;
             try {
-                // Get Canvas from Holder and lock it.
                 canvas = this.surfaceHolder.lockCanvas();
-
-                // Synchronized
                 synchronized (canvas)  {
                     this.gameSurface.update();
                     this.gameSurface.draw(canvas);
@@ -33,12 +28,10 @@ public class GameThread extends Thread {
                 // Do nothing.
             } finally {
                 if(canvas!= null)  {
-                    // Unlock Canvas.
                     this.surfaceHolder.unlockCanvasAndPost(canvas);
                 }
             }
             try {
-                // Sleep.
                 this.sleep(10);
             } catch(InterruptedException e)  {
 

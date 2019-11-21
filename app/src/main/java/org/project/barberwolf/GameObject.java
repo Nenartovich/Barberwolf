@@ -8,8 +8,8 @@ public class GameObject {
     protected final int rowCount;
     protected final int colCount;
 
-    protected final int WIDTH;
-    protected final int HEIGHT;
+    protected final int screenWidth;
+    protected final int screenHeidth;
 
     protected final int width;
 
@@ -27,16 +27,14 @@ public class GameObject {
         this.x= x;
         this.y= y;
 
-        this.WIDTH = image.getWidth();
-        this.HEIGHT = image.getHeight();
+        this.screenWidth = image.getWidth();
+        this.screenHeidth = image.getHeight();
 
-        this.width = this.WIDTH/ colCount;
-        this.height= this.HEIGHT/ rowCount;
+        this.width = this.screenWidth/ colCount;
+        this.height= this.screenHeidth/ rowCount;
     }
 
-
     protected Bitmap createSubImageAt(int row, int col)  {
-        // createBitmap(bitmap, x, y, width, height).
         Bitmap subImage = Bitmap.createBitmap(image, col* width, row* height ,width,height);
         return subImage;
     }
@@ -49,7 +47,6 @@ public class GameObject {
         return this.y;
     }
 
-
     public int getHeight() {
         return height;
     }
@@ -57,5 +54,4 @@ public class GameObject {
     public int getWidth() {
         return width;
     }
-
 }

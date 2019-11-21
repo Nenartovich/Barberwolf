@@ -7,8 +7,7 @@ public class Grass extends GameObject {
 
     private Bitmap bitmap;
 
-    // Velocity of game character (pixel/millisecond)
-    private int movingVectorX = -30;
+    private int movingVectorX = -20;
     private int movingVectorY = 0;
 
     private GameSurface gameSurface;
@@ -28,14 +27,12 @@ public class Grass extends GameObject {
 
 
     public void update()  {
-        // Calculate the new position of the game character.
         this.x = x + movingVectorX;
         this.y = y + movingVectorY;
 
-        // When the game's character touches the edge of the screen, then change direction
-
+        System.out.println(this.getWidth());
         if(this.x <= -this.getWidth() )  {
-            this.x = this.getWidth()*5;
+            this.x = this.getWidth()*9;
         }
     }
 
