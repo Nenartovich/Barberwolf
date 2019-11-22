@@ -24,6 +24,16 @@ public class Wolf extends GameObject {
 
     private GameSurface gameSurface;
 
+    private double oldY;
+    private double newY;
+
+    private boolean moveFlag = false;
+
+    private boolean jumpFlag = false;
+    private boolean jumpPhase1 = false;
+    private int jumpHeight = 0;
+    private boolean downSwipeFlag = false;
+
     public Wolf(GameSurface gameSurface, Bitmap image, int x, int y) {
         super(image, 4, 3, x, y);
 
@@ -70,6 +80,18 @@ public class Wolf extends GameObject {
 
         this.x = x + movingVectorX;
         this.y = y + movingVectorY;
+
+        if (jumpFlag && jumpPhase1 && jumpHeight < 5) {
+            this.y -= 15;
+            this.jumpHeight++;
+        } else if (jumpFlag && jumpPhase1 && jumpHeight == 5) {
+            setJumpPhase1(false);
+        } else if (jumpFlag && !jumpPhase1 && jumpHeight > 0) {
+            this.y += 15;
+            this.jumpHeight--;
+        } else if (jumpFlag && !jumpPhase1 && jumpHeight == 0) {
+            setJumpFlag(false);
+        }
     }
 
     public void draw(Canvas canvas)  {
@@ -77,5 +99,44 @@ public class Wolf extends GameObject {
         canvas.drawBitmap(bitmap,x, y, null);
     }
 
+    public void setOldY(double currentY) {
+        oldY = currentY;
+    }
+
+    public void setNewY(double currentY) {
+        newY = currentY;
+    }
+
+    public double getOldY() {
+        return oldY;
+    }
+
+    public double getNewY() {
+        return newY;
+    }
+
+    public void setMoveFlag(boolean flag) {
+        moveFlag = flag;
+    }
+
+    public boolean getMoveFlag() {
+        return moveFlag;
+    }
+
+    public void setJumpPhase1(boolean flag) {
+        jumpPhase1 = flag;
+    }
+
+    public void setJumpFlag(boolean flag) {
+        jumpFlag = flag;
+    }
+
+    public void setDownSwipeFlag(boolean flag) {
+        downSwipeFlag = flag;
+    }
+
+    public boolean getDownSwipeFlag() {
+        return downSwipeFlag;
+    }
 }
 

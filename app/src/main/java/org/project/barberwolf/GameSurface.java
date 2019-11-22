@@ -26,6 +26,30 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         // TODO Realization of jump
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            wolf.setOldY(event.getY());
+        }
+        if (event.getAction() == MotionEvent.ACTION_MOVE) {
+            if (wolf.getOldY() < event.getY() && !wolf.getMoveFlag()) {
+                wolf.y += 40;
+                wolf.setMoveFlag(true);
+                wolf.setDownSwipeFlag(true);
+            }
+        }
+        if (event.getAction() == MotionEvent.ACTION_UP) {
+            if (wolf.getDownSwipeFlag()) {
+                wolf.y -= 40;
+                wolf.setDownSwipeFlag(false);
+                wolf.setMoveFlag(false);
+            } else {
+                wolf.setNewY(event.getY());
+                if (wolf.getOldY() > wolf.getNewY() && !wolf.getDownSwipeFlag()) {
+                    wolf.setJumpPhase1(true);
+                    wolf.setJumpFlag(true);
+                }
+            }
+
+        }
         return true;
     }
 

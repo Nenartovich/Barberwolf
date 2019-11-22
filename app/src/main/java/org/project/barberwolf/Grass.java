@@ -30,7 +30,6 @@ public class Grass extends GameObject {
         this.x = x + movingVectorX;
         this.y = y + movingVectorY;
 
-        System.out.println(this.getWidth());
         if(this.x <= -this.getWidth() )  {
             this.x = this.getWidth()*9;
         }
