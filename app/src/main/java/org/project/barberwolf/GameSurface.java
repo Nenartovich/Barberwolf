@@ -25,7 +25,6 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        // TODO Realization of jump
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             wolf.setOldY(event.getY());
         }
@@ -34,6 +33,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
                 wolf.y += 40;
                 wolf.setMoveFlag(true);
                 wolf.setDownSwipeFlag(true);
+                wolf.setRowUsing(1);
             }
         }
         if (event.getAction() == MotionEvent.ACTION_UP) {
@@ -41,6 +41,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
                 wolf.y -= 40;
                 wolf.setDownSwipeFlag(false);
                 wolf.setMoveFlag(false);
+                wolf.setRowUsing(0);
             } else {
                 wolf.setNewY(event.getY());
                 if (wolf.getOldY() > wolf.getNewY() && !wolf.getDownSwipeFlag()) {
@@ -103,9 +104,9 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
         this.grassList.add(grass9);
         this.grassList.add(grass10);
 
-        Bitmap wolfBitmap = BitmapFactory.decodeResource(this.getResources(),R.drawable.wolf);
+        Bitmap wolfBitmap = BitmapFactory.decodeResource(this.getResources(),R.drawable.wolf4);
         Wolf newWolf = new Wolf(this, wolfBitmap,250,this.getHeight() -
-                grassBitmap.getHeight() - wolfBitmap.getHeight() / 4);
+                grassBitmap.getHeight() - wolfBitmap.getHeight() / 2);
         this.wolf = newWolf;
 
         this.gameThread = new GameThread(this, holder);
