@@ -30,7 +30,6 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
         }
         if (event.getAction() == MotionEvent.ACTION_MOVE) {
             if (wolf.getOldY() < event.getY() && !wolf.getMoveFlag()) {
-                wolf.y += 40;
                 wolf.setMoveFlag(true);
                 wolf.setDownSwipeFlag(true);
                 wolf.setRowUsing(1);
@@ -38,7 +37,6 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
         }
         if (event.getAction() == MotionEvent.ACTION_UP) {
             if (wolf.getDownSwipeFlag()) {
-                wolf.y -= 40;
                 wolf.setDownSwipeFlag(false);
                 wolf.setMoveFlag(false);
                 wolf.setRowUsing(0);
