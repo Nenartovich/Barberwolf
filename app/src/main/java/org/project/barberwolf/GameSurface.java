@@ -102,7 +102,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
         this.grassList.add(grass9);
         this.grassList.add(grass10);
 
-        Bitmap wolfBitmap = BitmapFactory.decodeResource(this.getResources(),R.drawable.wolf4);
+        Bitmap wolfBitmap = BitmapFactory.decodeResource(this.getResources(),R.drawable.wolf);
         Wolf newWolf = new Wolf(this, wolfBitmap,250,this.getHeight() -
                 grassBitmap.getHeight() - wolfBitmap.getHeight() / 2);
         this.wolf = newWolf;
