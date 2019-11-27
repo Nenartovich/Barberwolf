@@ -8,15 +8,27 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     private GameThread gameThread;
 
     private final List<Grass> grassList = new ArrayList<Grass>();
     private Wolf wolf = null;
+    public final List<Obtacle> obtaclesList = new ArrayList<Obtacle>();
 
+    public Bitmap grassBitmap = BitmapFactory.decodeResource(this.getResources(),R.drawable.grass);
+    public Bitmap obtacleBitmap = BitmapFactory.decodeResource(this.getResources(),R.drawable.obtacle);
+    public Bitmap sheepBitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.sheep);
+
+    public int screenHeight = 0;
+    public int grassHeight = grassBitmap.getHeight();
+
+
+    private int obtacleWidth = 0;
     public GameSurface(Context context)  {
         super(context);
         this.setFocusable(true);
@@ -53,10 +65,15 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void update()  {
-        for(Grass grassElement: grassList) {
+        for (Grass grassElement: grassList) {
             grassElement.update();
         }
+
         wolf.update();
+
+        for (Obtacle obtacleElement: obtaclesList) {
+            obtacleElement.update();
+        }
     }
 
     @Override
@@ -66,11 +83,14 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
             grassElement.draw(canvas);
         }
         wolf.draw(canvas);
+        for (Obtacle obtacleElement: obtaclesList) {
+            obtacleElement.draw(canvas);
+        }
     }
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        Bitmap grassBitmap = BitmapFactory.decodeResource(this.getResources(),R.drawable.grass);
+
         Grass grass1 = new Grass(this, grassBitmap,0,this.getHeight()
                 - grassBitmap.getHeight());
         Grass grass2 = new Grass(this, grassBitmap, grassBitmap.getWidth(),
@@ -107,9 +127,37 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
                 grassBitmap.getHeight() - wolfBitmap.getHeight() / 2);
         this.wolf = newWolf;
 
+        int tmp = wolfBitmap.getWidth() * 3;
+        tmp /= 240;
+        tmp ++;
+        tmp *= 20;
+        setObtacleWidth(tmp);
+        Obtacle newObtacle1 = new Obtacle(this, obtacleBitmap,5*obtacleWidth,
+                this.getHeight() - grassBitmap.getHeight() - obtacleBitmap.getHeight());
+        this.obtaclesList.add(newObtacle1);
+
+        Obtacle newObtacle2 = new Obtacle(this, obtacleBitmap,7*obtacleWidth,
+                this.getHeight() - grassBitmap.getHeight() - obtacleBitmap.getHeight());
+        this.obtaclesList.add(newObtacle2);
+
+        Obtacle newObtacle3 = new Obtacle(this, obtacleBitmap,9*obtacleWidth,
+                this.getHeight() - grassBitmap.getHeight() - obtacleBitmap.getHeight());
+        this.obtaclesList.add(newObtacle3);
+
+
+
         this.gameThread = new GameThread(this, holder);
         this.gameThread.setRunning(true);
         this.gameThread.start();
+    }
+
+
+    public void setObtacleWidth(int width) {
+        obtacleWidth = width;
+    }
+
+    public int getObtacleWidth() {
+        return obtacleWidth;
     }
 
     @Override

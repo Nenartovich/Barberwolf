@@ -27,7 +27,7 @@ public class GameThread extends Thread {
             }catch(Exception e)  {
                 // Do nothing.
             } finally {
-                if(canvas!= null)  {
+                if (canvas!= null) {
                     this.surfaceHolder.unlockCanvasAndPost(canvas);
                 }
             }
@@ -41,6 +41,6 @@ public class GameThread extends Thread {
     }
 
     public void setRunning(boolean running)  {
-        this.running= running;
+        this.running = running;
     }
 }
