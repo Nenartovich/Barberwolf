@@ -18,7 +18,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
 
     private final List<Grass> grassList = new ArrayList<Grass>();
     private Wolf wolf = null;
-    public final List<Obtacle> obtaclesList = new ArrayList<Obtacle>();
+    private final List<Obtacle> obtaclesList = new ArrayList<Obtacle>();
 
     public Bitmap grassBitmap = BitmapFactory.decodeResource(this.getResources(),R.drawable.grass);
     public Bitmap obtacleBitmap = BitmapFactory.decodeResource(this.getResources(),R.drawable.obtacle);
@@ -64,6 +64,16 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
         return true;
     }
 
+    public void setObtaclesList(List<Obtacle> list) {
+        for (int i = 0; i < list.size(); i++) {
+            obtaclesList.get(i).x = list.get(i).getX();
+            obtaclesList.get(i).y = list.get(i).getY();
+        }
+    }
+
+    public List<Obtacle> getObtaclesList() {
+        return obtaclesList;
+    }
     public void update()  {
         for (Grass grassElement: grassList) {
             grassElement.update();

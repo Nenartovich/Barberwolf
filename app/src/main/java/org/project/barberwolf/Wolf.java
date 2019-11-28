@@ -3,6 +3,9 @@ package org.project.barberwolf;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Wolf extends GameObject {
 
     private int rowUsing = 0;
@@ -74,6 +77,42 @@ public class Wolf extends GameObject {
         } else if (jumpFlag && !jumpPhase1 && jumpHeight == 0) {
             setJumpFlag(false);
         }
+
+
+        List<Obtacle> obtaclesList = gameSurface.getObtaclesList();
+
+        for (Obtacle obtacle : obtaclesList) {
+            int obtacleX0 = obtacle.getX() + obtacle.getWidth() / 8,
+                    obtacleY0 = obtacle.getY();
+
+            int obtacleX1 = obtacle.getX() + obtacle.getWidth()
+                    - obtacle.getWidth() / 8,
+                    obtacleY1 = obtacle.getY() + obtacle.getHeight();
+
+            int wolfX0 = this.getX() + this.getWidth() / 4,
+                    wolfY0 = this.getY() + this.getHeight() / 3;
+
+            int wolfX1 = this.getX() + this.getWidth(),
+                    wolfY1 = this.getY() + this.getHeight() - this.getHeight() / 3;
+
+            if (this.downSwipeFlag) {
+                wolfY0 += this.getHeight() / 3;
+                wolfY1 += this.getHeight() / 3;
+            }
+
+
+            boolean pr1 = false, pr2 = false, pr3 = false, pr4 = false;
+            pr1 = obtacleX0 >= wolfX0 && obtacleX0 >= wolfX1;
+            pr2 = obtacleX1 <= wolfX0 && obtacleX1 <= wolfX1;
+            pr3 = obtacleY0 >= wolfY0 && obtacleY0 >= wolfY1;
+            pr4 = obtacleY1 <= wolfY0 && obtacleY1 <= wolfY1;
+
+            if (!pr1 && !pr2 && !pr3 && !pr4 && !obtacle.isGood()) {
+                obtacle.setMovingVector(0, 0);
+            }
+        }
+        gameSurface.setObtaclesList(obtaclesList);
+
     }
 
     public void draw(Canvas canvas)  {

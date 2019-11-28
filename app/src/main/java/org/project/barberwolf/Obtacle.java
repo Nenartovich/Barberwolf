@@ -3,6 +3,8 @@ package org.project.barberwolf;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
+import java.util.List;
+
 public class Obtacle extends GameObject {
     private Bitmap bitmap;
 
@@ -11,16 +13,26 @@ public class Obtacle extends GameObject {
 
     private int floor = 1;
 
+    private boolean good = false;
+
     private GameSurface gameSurface;
 
     public Obtacle(GameSurface gameSurface, Bitmap image, int x, int y) {
         super(image, 1, 1, x, y);
 
-        this.gameSurface= gameSurface;
+        this.gameSurface = gameSurface;
 
         this.bitmap = this.createSubImageAt(0, 0);
     }
 
+    public boolean isGood() {
+        return good;
+    }
+
+    public void setMovingVector(int newMovingVectorX, int newMovingVectorY) {
+        movingVectorX = newMovingVectorX;
+        movingVectorY = newMovingVectorY;
+    }
 
     public Bitmap getBitmap()  {
         return this.bitmap;
@@ -31,13 +43,16 @@ public class Obtacle extends GameObject {
         this.y = y + movingVectorY;
 
         if (this.x <= -gameSurface.getObtacleWidth())  {
-            for (Obtacle obtacle : this.gameSurface.obtaclesList) {
+            List<Obtacle> obtaclesList = gameSurface.getObtaclesList();
+            for (Obtacle obtacle : obtaclesList) {
                 if (obtacle.getX() <= -gameSurface.getObtacleWidth()) {
                     int randomNumber = (int)(Math.random() * 10);
                     if (randomNumber >= 0 && randomNumber <= 2) {
                         obtacle.bitmap = this.gameSurface.sheepBitmap;
+                        obtacle.good = true;
                     } else {
                         obtacle.bitmap = this.gameSurface.obtacleBitmap;
+                        obtacle.good = false;
                     }
 
                     randomNumber = (int)(Math.random() * 100) % 3 + 1;
@@ -64,7 +79,6 @@ public class Obtacle extends GameObject {
                 }
             }
             this.x = 5*gameSurface.getObtacleWidth();
-
         }
     }
 
