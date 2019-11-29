@@ -12,30 +12,32 @@ public class Grass extends GameObject {
 
     private GameSurface gameSurface;
 
+    final static int grassMaxCoef = 9;
+
     public Grass(GameSurface gameSurface, Bitmap image, int x, int y) {
         super(image, 1, 1, x, y);
 
-        this.gameSurface= gameSurface;
+        this.gameSurface = gameSurface;
 
         this.bitmap = this.createSubImageAt(0, 0);
     }
 
-    public Bitmap getBitmap()  {
+    public Bitmap getBitmap() {
         return this.bitmap;
 
     }
 
 
-    public void update()  {
+    public void update() {
         this.x = x + movingVectorX;
         this.y = y + movingVectorY;
 
-        if(this.x <= -this.getWidth() )  {
-            this.x = this.getWidth()*9;
+        if (this.x <= -this.getWidth()) {
+            this.x = this.getWidth() * grassMaxCoef;
         }
     }
 
-    public void draw(Canvas canvas)  {
+    public void draw(Canvas canvas) {
         Bitmap bitmap = this.getBitmap();
         canvas.drawBitmap(bitmap, x, y, null);
     }

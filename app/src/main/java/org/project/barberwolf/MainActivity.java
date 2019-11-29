@@ -1,6 +1,6 @@
 package org.project.barberwolf;
 
-import  androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,16 +10,15 @@ import android.widget.Button;
 
 
 public class MainActivity extends AppCompatActivity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
-        final Button newGameButton = (Button) findViewById(R.id.newGameButton);
-        Button settingsButton = (Button) findViewById(R.id.settingsButton);
-        Button exitButton = (Button) findViewById(R.id.exitButton);
+        final Button newGameButton = findViewById(R.id.newGameButton);
+        Button settingsButton = findViewById(R.id.settingsButton);
+        Button exitButton = findViewById(R.id.exitButton);
 
         newGameButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,7 +42,4 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
-
-
 }

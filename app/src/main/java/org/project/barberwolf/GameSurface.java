@@ -1,5 +1,6 @@
 package org.project.barberwolf;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -8,33 +9,33 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     private GameThread gameThread;
 
-    private final List<Grass> grassList = new ArrayList<Grass>();
+    private final List<Grass> grassList = new ArrayList<>();
     private Wolf wolf = null;
-    private final List<Obtacle> obtaclesList = new ArrayList<Obtacle>();
+    private final List<Obstacle> obstaclesList = new ArrayList<>();
 
-    public Bitmap grassBitmap = BitmapFactory.decodeResource(this.getResources(),R.drawable.grass);
-    public Bitmap obtacleBitmap = BitmapFactory.decodeResource(this.getResources(),R.drawable.obtacle);
+    public Bitmap grassBitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.grass);
+    public Bitmap obstacleBitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.obtacle);
     public Bitmap sheepBitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.sheep);
 
-    public int screenHeight = 0;
-    public int grassHeight = grassBitmap.getHeight();
+    private int obstacleWidth = 0;
 
+    final static int wolfPositionX = 250;
+    final static int obstacleNormalCoef = 240;
+    final static int obstacleOffset = 20;
 
-    private int obtacleWidth = 0;
-    public GameSurface(Context context)  {
+    public GameSurface(Context context) {
         super(context);
         this.setFocusable(true);
         this.getHolder().addCallback(this);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
@@ -64,97 +65,80 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
         return true;
     }
 
-    public void setObtaclesList(List<Obtacle> list) {
+    public void setObstaclesList(List<Obstacle> list) {
         for (int i = 0; i < list.size(); i++) {
-            obtaclesList.get(i).x = list.get(i).getX();
-            obtaclesList.get(i).y = list.get(i).getY();
+            obstaclesList.get(i).x = list.get(i).getX();
+            obstaclesList.get(i).y = list.get(i).getY();
         }
     }
 
-    public List<Obtacle> getObtaclesList() {
-        return obtaclesList;
+    public List<Obstacle> getObstaclesList() {
+        return obstaclesList;
     }
-    public void update()  {
-        for (Grass grassElement: grassList) {
+
+    public void update() {
+        for (Grass grassElement : grassList) {
             grassElement.update();
         }
 
         wolf.update();
 
-        for (Obtacle obtacleElement: obtaclesList) {
-            obtacleElement.update();
+        for (Obstacle obstacleElement : obstaclesList) {
+            obstacleElement.update();
         }
     }
 
     @Override
-    public void draw(Canvas canvas)  {
+    public void draw(Canvas canvas) {
         super.draw(canvas);
-        for(Grass grassElement: grassList)  {
+        for (Grass grassElement : grassList) {
             grassElement.draw(canvas);
         }
         wolf.draw(canvas);
-        for (Obtacle obtacleElement: obtaclesList) {
-            obtacleElement.draw(canvas);
+        for (Obstacle obstacleElement : obstaclesList) {
+            obstacleElement.draw(canvas);
         }
     }
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
+        this.grassList.add(new Grass(this, grassBitmap, 0, this.getHeight()
+                - grassBitmap.getHeight()));
+        this.grassList.add(new Grass(this, grassBitmap, grassBitmap.getWidth(),
+                this.getHeight() - grassBitmap.getHeight()));
+        this.grassList.add(new Grass(this, grassBitmap, 2 * grassBitmap.getWidth(),
+                this.getHeight() - grassBitmap.getHeight()));
+        this.grassList.add(new Grass(this, grassBitmap, 3 * grassBitmap.getWidth(),
+                this.getHeight() - grassBitmap.getHeight()));
+        this.grassList.add(new Grass(this, grassBitmap, 4 * grassBitmap.getWidth(),
+                this.getHeight() - grassBitmap.getHeight()));
+        this.grassList.add(new Grass(this, grassBitmap, 5 * grassBitmap.getWidth(),
+                this.getHeight() - grassBitmap.getHeight()));
+        this.grassList.add(new Grass(this, grassBitmap, 6 * grassBitmap.getWidth(),
+                this.getHeight() - grassBitmap.getHeight()));
+        this.grassList.add(new Grass(this, grassBitmap, 7 * grassBitmap.getWidth(),
+                this.getHeight() - grassBitmap.getHeight()));
+        this.grassList.add(new Grass(this, grassBitmap, 8 * grassBitmap.getWidth(),
+                this.getHeight() - grassBitmap.getHeight()));
+        this.grassList.add(new Grass(this, grassBitmap, 9 * grassBitmap.getWidth(),
+                this.getHeight() - grassBitmap.getHeight()));
 
-        Grass grass1 = new Grass(this, grassBitmap,0,this.getHeight()
-                - grassBitmap.getHeight());
-        Grass grass2 = new Grass(this, grassBitmap, grassBitmap.getWidth(),
-                this.getHeight() - grassBitmap.getHeight());
-        Grass grass3 = new Grass(this, grassBitmap,2*grassBitmap.getWidth(),
-                this.getHeight() - grassBitmap.getHeight());
-        Grass grass4 = new Grass(this, grassBitmap,3*grassBitmap.getWidth(),
-                this.getHeight() - grassBitmap.getHeight());
-        Grass grass5 = new Grass(this, grassBitmap,4*grassBitmap.getWidth(),
-                this.getHeight() - grassBitmap.getHeight());
-        Grass grass6 = new Grass(this, grassBitmap,5*grassBitmap.getWidth(),
-                this.getHeight() - grassBitmap.getHeight());
-        Grass grass7 = new Grass(this, grassBitmap,6*grassBitmap.getWidth(),
-                this.getHeight() - grassBitmap.getHeight());
-        Grass grass8 = new Grass(this, grassBitmap,7*grassBitmap.getWidth(),
-                this.getHeight() - grassBitmap.getHeight());
-        Grass grass9 = new Grass(this, grassBitmap,8*grassBitmap.getWidth(),
-                this.getHeight() - grassBitmap.getHeight());
-        Grass grass10 = new Grass(this, grassBitmap,9*grassBitmap.getWidth(),
-                this.getHeight() - grassBitmap.getHeight());
-        this.grassList.add(grass1);
-        this.grassList.add(grass2);
-        this.grassList.add(grass3);
-        this.grassList.add(grass4);
-        this.grassList.add(grass5);
-        this.grassList.add(grass6);
-        this.grassList.add(grass7);
-        this.grassList.add(grass8);
-        this.grassList.add(grass9);
-        this.grassList.add(grass10);
-
-        Bitmap wolfBitmap = BitmapFactory.decodeResource(this.getResources(),R.drawable.wolf);
-        Wolf newWolf = new Wolf(this, wolfBitmap,250,this.getHeight() -
+        Bitmap wolfBitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.wolf);
+        this.wolf = new Wolf(this, wolfBitmap, wolfPositionX, this.getHeight() -
                 grassBitmap.getHeight() - wolfBitmap.getHeight() / 2);
-        this.wolf = newWolf;
 
-        int tmp = wolfBitmap.getWidth() * 3;
-        tmp /= 240;
-        tmp ++;
-        tmp *= 20;
-        setObtacleWidth(tmp);
-        Obtacle newObtacle1 = new Obtacle(this, obtacleBitmap,5*obtacleWidth,
-                this.getHeight() - grassBitmap.getHeight() - obtacleBitmap.getHeight());
-        this.obtaclesList.add(newObtacle1);
+        setObstacleWidth(wolfBitmap.getWidth() * 3 / obstacleNormalCoef * obstacleOffset + obstacleOffset);
+        Obstacle newObstacle1 = new Obstacle(this, obstacleBitmap, 5 * obstacleWidth,
+                this.getHeight() - grassBitmap.getHeight() - obstacleBitmap.getHeight());
+        this.obstaclesList.add(newObstacle1);
 
-        Obtacle newObtacle2 = new Obtacle(this, obtacleBitmap,7*obtacleWidth,
-                this.getHeight() - grassBitmap.getHeight() - obtacleBitmap.getHeight());
-        this.obtaclesList.add(newObtacle2);
+        Obstacle newObstacle2 = new Obstacle(this, obstacleBitmap, 7 * obstacleWidth,
+                this.getHeight() - grassBitmap.getHeight() - obstacleBitmap.getHeight());
+        this.obstaclesList.add(newObstacle2);
 
-        Obtacle newObtacle3 = new Obtacle(this, obtacleBitmap,9*obtacleWidth,
-                this.getHeight() - grassBitmap.getHeight() - obtacleBitmap.getHeight());
-        this.obtaclesList.add(newObtacle3);
-
-
+        Obstacle newObstacle3 = new Obstacle(this, obstacleBitmap, 9 * obstacleWidth,
+                this.getHeight() - grassBitmap.getHeight() - obstacleBitmap.getHeight());
+        this.obstaclesList.add(newObstacle3);
 
         this.gameThread = new GameThread(this, holder);
         this.gameThread.setRunning(true);
@@ -162,12 +146,12 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     }
 
 
-    public void setObtacleWidth(int width) {
-        obtacleWidth = width;
+    public void setObstacleWidth(int width) {
+        obstacleWidth = width;
     }
 
-    public int getObtacleWidth() {
-        return obtacleWidth;
+    public int getObstacleWidth() {
+        return obstacleWidth;
     }
 
     @Override
@@ -177,15 +161,13 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
-        boolean retry= true;
-        while(retry) {
+        while (true) {
             try {
                 this.gameThread.setRunning(false);
                 this.gameThread.join();
-            }catch(InterruptedException e)  {
+            } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            retry= true;
         }
     }
 }

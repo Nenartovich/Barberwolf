@@ -9,38 +9,38 @@ public class GameThread extends Thread {
     private GameSurface gameSurface;
     private SurfaceHolder surfaceHolder;
 
-    public GameThread(GameSurface gameSurface, SurfaceHolder surfaceHolder)  {
-        this.gameSurface= gameSurface;
-        this.surfaceHolder= surfaceHolder;
+    public GameThread(GameSurface gameSurface, SurfaceHolder surfaceHolder) {
+        this.gameSurface = gameSurface;
+        this.surfaceHolder = surfaceHolder;
     }
 
     @Override
-    public void run()  {
-        while(running)  {
-            Canvas canvas= null;
+    public void run() {
+        while (running) {
+            Canvas canvas = null;
             try {
                 canvas = this.surfaceHolder.lockCanvas();
-                synchronized (canvas)  {
+                synchronized (canvas) {
                     this.gameSurface.update();
                     this.gameSurface.draw(canvas);
                 }
-            }catch(Exception e)  {
+            } catch (Exception e) {
                 // Do nothing.
             } finally {
-                if (canvas!= null) {
+                if (canvas != null) {
                     this.surfaceHolder.unlockCanvasAndPost(canvas);
                 }
             }
-            try {
-                this.sleep(10);
-            } catch(InterruptedException e)  {
 
+            try {
+                sleep(10);
+            } catch (InterruptedException ignored) {
             }
 
         }
     }
 
-    public void setRunning(boolean running)  {
+    public void setRunning(boolean running) {
         this.running = running;
     }
 }

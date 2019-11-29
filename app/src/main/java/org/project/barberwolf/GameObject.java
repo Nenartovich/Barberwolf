@@ -18,32 +18,31 @@ public class GameObject {
     protected int x;
     protected int y;
 
-    public GameObject(Bitmap image, int rowCount, int colCount, int x, int y)  {
+    public GameObject(Bitmap image, int rowCount, int colCount, int x, int y) {
 
         this.image = image;
-        this.rowCount= rowCount;
-        this.colCount= colCount;
+        this.rowCount = rowCount;
+        this.colCount = colCount;
 
-        this.x= x;
-        this.y= y;
+        this.x = x;
+        this.y = y;
 
         this.screenWidth = image.getWidth();
         this.screenHeidth = image.getHeight();
 
-        this.width = this.screenWidth/ colCount;
-        this.height= this.screenHeidth/ rowCount;
+        this.width = this.screenWidth / colCount;
+        this.height = this.screenHeidth / rowCount;
     }
 
-    protected Bitmap createSubImageAt(int row, int col)  {
-        Bitmap subImage = Bitmap.createBitmap(image, col* width, row* height ,width,height);
-        return subImage;
+    protected Bitmap createSubImageAt(int row, int col) {
+        return Bitmap.createBitmap(image, col * width, row * height, width, height);
     }
 
-    public int getX()  {
+    public int getX() {
         return this.x;
     }
 
-    public int getY()  {
+    public int getY() {
         return this.y;
     }
 
