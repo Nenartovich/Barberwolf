@@ -49,9 +49,16 @@ public class Obstacle extends GameObject {
                     int randomNumber = (int) (Math.random() * 10);
                     if (randomNumber >= 0 && randomNumber <= 2) {
                         obstacle.bitmap = this.gameSurface.sheepBitmap;
+                        if (!obstacle.good) {
+                            obstacle.y -= this.gameSurface.sheepBitmap.getHeight() / 3;
+                        }
                         obstacle.good = true;
+
                     } else {
                         obstacle.bitmap = this.gameSurface.obstacleBitmap;
+                        if (obstacle.good) {
+                            obstacle.y += this.gameSurface.sheepBitmap.getHeight() / 3;
+                        }
                         obstacle.good = false;
                     }
 

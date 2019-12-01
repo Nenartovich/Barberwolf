@@ -127,6 +127,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
         this.wolf = new Wolf(this, wolfBitmap, wolfPositionX, this.getHeight() -
                 grassBitmap.getHeight() - wolfBitmap.getHeight() / 2);
 
+
         setObstacleWidth(wolfBitmap.getWidth() * 3 / obstacleNormalCoef * obstacleOffset + obstacleOffset);
         Obstacle newObstacle1 = new Obstacle(this, obstacleBitmap, 5 * obstacleWidth,
                 this.getHeight() - grassBitmap.getHeight() - obstacleBitmap.getHeight());
