@@ -15,6 +15,7 @@ import java.util.List;
 public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     private GameThread gameThread;
 
+    private Background background = null;
     private final List<Grass> grassList = new ArrayList<>();
     private Wolf wolf = null;
     private final List<Obstacle> obstaclesList = new ArrayList<>();
@@ -22,6 +23,8 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     public Bitmap grassBitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.grass);
     public Bitmap obstacleBitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.obtacle);
     public Bitmap sheepBitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.sheep);
+    public Bitmap backgroundBitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.background);
+
 
     private int obstacleWidth = 0;
 
@@ -91,6 +94,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public void draw(Canvas canvas) {
         super.draw(canvas);
+        background.draw(canvas);
         for (Grass grassElement : grassList) {
             grassElement.draw(canvas);
         }
@@ -102,6 +106,9 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
+        this.background = new Background(this, backgroundBitmap, 0, this.getHeight()
+                - backgroundBitmap.getHeight());
+
         this.grassList.add(new Grass(this, grassBitmap, 0, this.getHeight()
                 - grassBitmap.getHeight()));
         this.grassList.add(new Grass(this, grassBitmap, grassBitmap.getWidth(),
