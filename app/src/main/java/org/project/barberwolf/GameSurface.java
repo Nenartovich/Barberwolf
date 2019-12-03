@@ -33,17 +33,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     final static int wolfPositionX = 250;
     final static int obstacleNormalCoef = 240;
     final static int obstacleOffset = 20;
-
-    private boolean reduceHealthFlag = false;
-
-    public void setReduceFlag(boolean flag) {
-        reduceHealthFlag = flag;
-    }
-
-    public boolean getReduceFlag() {
-        return reduceHealthFlag;
-    }
-
+    
     public GameSurface(Context context) {
         super(context);
         this.setFocusable(true);
