@@ -28,12 +28,21 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     public Bitmap sheepBitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.sheep);
     public Bitmap backgroundBitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.background);
 
-
     private int obstacleWidth = 0;
 
     final static int wolfPositionX = 250;
     final static int obstacleNormalCoef = 240;
     final static int obstacleOffset = 20;
+
+    private boolean reduceHealthFlag = false;
+
+    public void setReduceFlag(boolean flag) {
+        reduceHealthFlag = flag;
+    }
+
+    public boolean getReduceFlag() {
+        return reduceHealthFlag;
+    }
 
     public GameSurface(Context context) {
         super(context);
@@ -66,9 +75,12 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
                     wolf.setJumpFlag(true);
                 }
             }
-
         }
         return true;
+    }
+
+    public void reduceHealth() {
+        healthIndicator.value = healthIndicator.value - 1;
     }
 
     public void setObstaclesList(List<Obstacle> list) {
@@ -83,6 +95,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void update() {
+
         for (Grass grassElement : grassList) {
             grassElement.update();
         }
@@ -116,6 +129,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     public void surfaceCreated(SurfaceHolder holder) {
         this.background = new Background(this, backgroundBitmap, 0, this.getHeight()
                 - backgroundBitmap.getHeight());
+
         this.healthIndicator = new HealthIndicator(this, 5, 100, 100);
         this.scoreIndicator = new ScoreIndicator(this, 5, 1000, 100);
 
