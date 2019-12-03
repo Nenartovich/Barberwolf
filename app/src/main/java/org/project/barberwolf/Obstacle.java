@@ -56,7 +56,7 @@ public class Obstacle extends GameObject {
             for (Obstacle obstacle : obtaclesList) {
                 obstacle.setCaughtFlag(false);
                 if (obstacle.getX() <= -gameSurface.getObstacleWidth()) {
-                    int randomNumber = (int) (Math.random() * 10);
+                    int randomNumber = (int) (Math.random() * 7);
                     if (randomNumber >= 0 && randomNumber <= 2) {
                         obstacle.bitmap = this.gameSurface.sheepBitmap;
                         if (!obstacle.good) {

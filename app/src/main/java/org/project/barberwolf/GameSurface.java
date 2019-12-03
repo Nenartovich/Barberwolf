@@ -68,7 +68,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
         });
 
         this.IdSheepCaught = this.soundPool.load(this.getContext(), R.raw.sheep_caught_1, 1);
-        this.IdCryingWolf = this.soundPool.load(this.getContext(), R.raw.crying_wolf_1, 1);
+        this.IdCryingWolf = this.soundPool.load(this.getContext(), R.raw.crying_wolf_7, 1);
     }
 
     public void playSoundSheepCaught() {
