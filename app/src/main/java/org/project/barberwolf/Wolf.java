@@ -108,11 +108,12 @@ public class Wolf extends GameObject {
             pr2 = obtacleX1 <= wolfX0 && obtacleX1 <= wolfX1;
             pr3 = obtacleY0 >= wolfY0 && obtacleY0 >= wolfY1;
             pr4 = obtacleY1 <= wolfY0 && obtacleY1 <= wolfY1;
-            
+
             boolean obstacleCatched = catchObstacle(pr1, pr2, pr3, pr4);
             if (obstacleCatched) {
                 if (obstacle.isGood()) {
                     if (!obstacle.isCaught()) {
+                        gameSurface.playSoundExplosion();
                         gameSurface.increaseScore();
                         obstacle.setCaughtFlag(true);
                     }

@@ -5,6 +5,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.media.AudioAttributes;
+import android.media.SoundPool;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -34,11 +36,45 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
 
     final static int initialHealth = 100;
     final static int initialScore = 0;
-    
+    private SoundPool soundPool;
+    private int IdSheepCaught;
+    private boolean soundPoolLoaded = false;
+
     public GameSurface(Context context) {
         super(context);
         this.setFocusable(true);
         this.getHolder().addCallback(this);
+        this.initSoundPool();
+    }
+
+    private void initSoundPool() {
+        AudioAttributes audioAttrib = new AudioAttributes.Builder()
+                .setUsage(AudioAttributes.USAGE_GAME)
+                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                .build();
+        SoundPool.Builder builder = new SoundPool.Builder();
+        builder.setAudioAttributes(audioAttrib).setMaxStreams(100);
+
+        this.soundPool = builder.build();
+
+        this.soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
+            @Override
+            public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
+                soundPoolLoaded = true;
+
+                // playSoundBackground();
+            }
+        });
+
+        this.IdSheepCaught = this.soundPool.load(this.getContext(), R.raw.sheep_caught_1, 1);
+    }
+
+    public void playSoundExplosion() {
+        if (this.soundPoolLoaded) {
+            float leftVolumn = 0.8f;
+            float rightVolumn = 0.8f;
+            this.soundPool.play(this.IdSheepCaught, leftVolumn, rightVolumn, 1, 0, 1f);
+        }
     }
 
     @SuppressLint("ClickableViewAccessibility")
