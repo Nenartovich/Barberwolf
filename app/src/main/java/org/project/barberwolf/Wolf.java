@@ -2,7 +2,6 @@ package org.project.barberwolf;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.util.Log;
 
 import java.util.List;
 
@@ -83,9 +82,7 @@ public class Wolf extends GameObject {
             setJumpFlag(false);
         }
 
-
         List<Obstacle> obstaclesList = gameSurface.getObstaclesList();
-
 
         for (Obstacle obstacle : obstaclesList) {
             int obstacleX0 = obstacle.getX() + obstacle.getWidth() / 8,
@@ -111,12 +108,10 @@ public class Wolf extends GameObject {
             pr2 = obtacleX1 <= wolfX0 && obtacleX1 <= wolfX1;
             pr3 = obtacleY0 >= wolfY0 && obtacleY0 >= wolfY1;
             pr4 = obtacleY1 <= wolfY0 && obtacleY1 <= wolfY1;
-
-
+            
             boolean obstacleCatched = catchObstacle(pr1, pr2, pr3, pr4);
             if (obstacleCatched) {
                 if (obstacle.isGood()) {
-                    // if (!gameSurface.getCatchSheepFlag()) {
                     if (!obstacle.isCaught()) {
                         gameSurface.increaseScore();
                         obstacle.setCaughtFlag(true);
@@ -125,11 +120,8 @@ public class Wolf extends GameObject {
                     gameSurface.reduceHealth();
                 }
             }
-
-            if (obstacle.isGood()) {
-                gameSurface.setCatchSheepFlag(obstacleCatched);
-            }
         }
+
         gameSurface.setObstaclesList(obstaclesList);
     }
 

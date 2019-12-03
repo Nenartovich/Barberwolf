@@ -5,7 +5,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -15,7 +14,6 @@ import java.util.List;
 
 public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     private GameThread gameThread;
-    private boolean catchSheepAtPrevUpdateFlag = false;
     private Background background = null;
     private HealthIndicator healthIndicator = null;
     private ScoreIndicator scoreIndicator = null;
@@ -41,14 +39,6 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
         super(context);
         this.setFocusable(true);
         this.getHolder().addCallback(this);
-    }
-
-    public void setCatchSheepFlag(boolean flag) {
-        this.catchSheepAtPrevUpdateFlag = flag;
-    }
-
-    public boolean getCatchSheepFlag() {
-        return this.catchSheepAtPrevUpdateFlag;
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -100,7 +90,6 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void update() {
-
         for (Grass grassElement : grassList) {
             grassElement.update();
         }
