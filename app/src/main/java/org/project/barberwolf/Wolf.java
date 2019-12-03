@@ -2,6 +2,7 @@ package org.project.barberwolf;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.util.Log;
 
 import java.util.List;
 
@@ -111,8 +112,10 @@ public class Wolf extends GameObject {
 
             if (!pr1 && !pr2 && !pr3 && !pr4 ) {
                 if (obstacle.isGood()) {
+                    System.out.println("111111111111111111111111111111111111111111111111111111111111111111111111111111111111111");
                     // TODO make realization of sheep cut
                 } else {
+                    System.out.println("222222222222222222222222222222222222222222222222222222222222222222222222222222222222222");
                     // TODO update data about wolf health
                 }
             }
