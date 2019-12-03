@@ -113,12 +113,16 @@ public class Wolf extends GameObject {
             if (obstacleCatched) {
                 if (obstacle.isGood()) {
                     if (!obstacle.isCaught()) {
-                        gameSurface.playSoundExplosion();
+                        gameSurface.playSoundSheepCaught();
                         gameSurface.increaseScore();
                         obstacle.setCaughtFlag(true);
                     }
                 } else {
                     gameSurface.reduceHealth();
+                    if (!obstacle.isCaught()) {
+                        gameSurface.playSoundCryingWolf();
+                        obstacle.setCaughtFlag(true);
+                    }
                 }
             }
         }
