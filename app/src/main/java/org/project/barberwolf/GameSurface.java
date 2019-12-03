@@ -17,6 +17,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     private GameThread gameThread;
 
     private Background background = null;
+    private HealthIndicator healthIndicator = null;
     private final List<Grass> grassList = new ArrayList<>();
     private Wolf wolf = null;
     private final List<Obstacle> obstaclesList = new ArrayList<>();
@@ -99,6 +100,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
 
         background.draw(canvas);
 
+        healthIndicator.draw(canvas);
         for (Grass grassElement : grassList) {
             grassElement.draw(canvas);
         }
@@ -112,6 +114,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     public void surfaceCreated(SurfaceHolder holder) {
         this.background = new Background(this, backgroundBitmap, 0, this.getHeight()
                 - backgroundBitmap.getHeight());
+        this.healthIndicator = new HealthIndicator(this, 5, 100, 100);
 
         this.grassList.add(new Grass(this, grassBitmap, 0, this.getHeight()
                 - grassBitmap.getHeight()));
