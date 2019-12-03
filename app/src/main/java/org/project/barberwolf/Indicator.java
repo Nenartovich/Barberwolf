@@ -11,7 +11,4 @@ public class Indicator {
         this.x = x;
         this.y = y;
     }
-
-
-
 }

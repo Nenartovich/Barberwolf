@@ -15,7 +15,7 @@ import java.util.List;
 
 public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     private GameThread gameThread;
-
+    private boolean catchSheepAtPrevUpdateFlag = false;
     private Background background = null;
     private HealthIndicator healthIndicator = null;
     private ScoreIndicator scoreIndicator = null;
@@ -33,11 +33,22 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     final static int wolfPositionX = 250;
     final static int obstacleNormalCoef = 240;
     final static int obstacleOffset = 20;
+
+    final static int initialHealth = 100;
+    final static int initialScore = 0;
     
     public GameSurface(Context context) {
         super(context);
         this.setFocusable(true);
         this.getHolder().addCallback(this);
+    }
+
+    public void setCatchSheepFlag(boolean flag) {
+        this.catchSheepAtPrevUpdateFlag = flag;
+    }
+
+    public boolean getCatchSheepFlag() {
+        return this.catchSheepAtPrevUpdateFlag;
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -74,7 +85,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void increaseScore() {
-        scoreIndicator.value = scoreIndicator.value + 1;
+        scoreIndicator.value = scoreIndicator.value + 10;
     }
 
     public void setObstaclesList(List<Obstacle> list) {
@@ -124,8 +135,8 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
         this.background = new Background(this, backgroundBitmap, 0, this.getHeight()
                 - backgroundBitmap.getHeight());
 
-        this.healthIndicator = new HealthIndicator(this, 5, 100, 100);
-        this.scoreIndicator = new ScoreIndicator(this, 5, 1000, 100);
+        this.healthIndicator = new HealthIndicator(this, initialHealth, 100, 100);
+        this.scoreIndicator = new ScoreIndicator(this, initialScore, 1000, 100);
 
         this.grassList.add(new Grass(this, grassBitmap, 0, this.getHeight()
                 - grassBitmap.getHeight()));

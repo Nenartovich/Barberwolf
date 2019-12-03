@@ -14,6 +14,7 @@ public class Obstacle extends GameObject {
     private int floor = 1;
 
     private boolean good = false;
+    private boolean caught = false;
 
     private GameSurface gameSurface;
 
@@ -27,6 +28,14 @@ public class Obstacle extends GameObject {
 
     public boolean isGood() {
         return good;
+    }
+
+    public boolean isCaught() {
+        return caught;
+    }
+
+    public void setCaughtFlag(boolean flag) {
+        caught = flag;
     }
 
     public void setMovingVector(int newMovingVectorX, int newMovingVectorY) {
@@ -45,6 +54,7 @@ public class Obstacle extends GameObject {
         if (this.x <= -gameSurface.getObstacleWidth()) {
             List<Obstacle> obtaclesList = gameSurface.getObstaclesList();
             for (Obstacle obstacle : obtaclesList) {
+                obstacle.setCaughtFlag(false);
                 if (obstacle.getX() <= -gameSurface.getObstacleWidth()) {
                     int randomNumber = (int) (Math.random() * 10);
                     if (randomNumber >= 0 && randomNumber <= 2) {

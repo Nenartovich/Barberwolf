@@ -58,6 +58,10 @@ public class Wolf extends GameObject {
         return bitmaps[this.colUsing];
     }
 
+    public boolean catchObstacle(boolean pr1, boolean pr2, boolean pr3, boolean pr4) {
+        return !pr1 && !pr2 && !pr3 && !pr4;
+    }
+
     public void update() {
         ++this.colUsing;
         if (colUsing >= this.colCount) {
@@ -82,6 +86,7 @@ public class Wolf extends GameObject {
 
         List<Obstacle> obstaclesList = gameSurface.getObstaclesList();
 
+
         for (Obstacle obstacle : obstaclesList) {
             int obstacleX0 = obstacle.getX() + obstacle.getWidth() / 8,
                     obtacleY0 = obstacle.getY();
@@ -101,20 +106,28 @@ public class Wolf extends GameObject {
                 wolfY1 += this.getHeight() / 3;
             }
 
-
             boolean pr1, pr2, pr3, pr4;
             pr1 = obstacleX0 >= wolfX0 && obstacleX0 >= wolfX1;
             pr2 = obtacleX1 <= wolfX0 && obtacleX1 <= wolfX1;
             pr3 = obtacleY0 >= wolfY0 && obtacleY0 >= wolfY1;
             pr4 = obtacleY1 <= wolfY0 && obtacleY1 <= wolfY1;
 
-            if (!pr1 && !pr2 && !pr3 && !pr4 ) {
+
+            boolean obstacleCatched = catchObstacle(pr1, pr2, pr3, pr4);
+            if (obstacleCatched) {
                 if (obstacle.isGood()) {
-                     // TODO make realization of sheep cut
-                    gameSurface.increaseScore();
+                    // if (!gameSurface.getCatchSheepFlag()) {
+                    if (!obstacle.isCaught()) {
+                        gameSurface.increaseScore();
+                        obstacle.setCaughtFlag(true);
+                    }
                 } else {
                     gameSurface.reduceHealth();
                 }
+            }
+
+            if (obstacle.isGood()) {
+                gameSurface.setCatchSheepFlag(obstacleCatched);
             }
         }
         gameSurface.setObstaclesList(obstaclesList);
