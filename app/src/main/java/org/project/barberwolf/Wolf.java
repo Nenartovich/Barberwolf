@@ -30,6 +30,8 @@ public class Wolf extends GameObject {
 
     final static int wolfJumpOffset = 15;
 
+    private int health = 3;
+
     public Wolf(GameSurface gameSurface, Bitmap image, int x, int y) {
         super(image, 2, 6, x, y);
 
@@ -107,12 +109,15 @@ public class Wolf extends GameObject {
             pr3 = obtacleY0 >= wolfY0 && obtacleY0 >= wolfY1;
             pr4 = obtacleY1 <= wolfY0 && obtacleY1 <= wolfY1;
 
-            if (!pr1 && !pr2 && !pr3 && !pr4 && !obstacle.isGood()) {
-                obstacle.setMovingVector(0, 0);
+            if (!pr1 && !pr2 && !pr3 && !pr4 ) {
+                if (obstacle.isGood()) {
+                    // TODO make realization of sheep cut
+                } else {
+                    // TODO update data about wolf health
+                }
             }
         }
         gameSurface.setObstaclesList(obstaclesList);
-
     }
 
     public void draw(Canvas canvas) {

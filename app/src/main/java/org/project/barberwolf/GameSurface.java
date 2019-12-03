@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -91,10 +92,13 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
         }
     }
 
+
     @Override
     public void draw(Canvas canvas) {
         super.draw(canvas);
+
         background.draw(canvas);
+
         for (Grass grassElement : grassList) {
             grassElement.draw(canvas);
         }

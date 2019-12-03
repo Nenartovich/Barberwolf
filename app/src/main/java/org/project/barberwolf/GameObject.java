@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 
 public class GameObject {
     protected Bitmap image;
+    protected String value;
 
     protected final int rowCount;
     protected final int colCount;
