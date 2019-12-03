@@ -115,13 +115,13 @@ public class Wolf extends GameObject {
             if (!pr1 && !pr2 && !pr3 && !pr4 ) {
                 if (obstacle.isGood()) {
                      // TODO make realization of sheep cut
+                    gameSurface.increaseScore();
                 } else {
                     // TODO update data about wolf health
                     if (!gameSurface.getReduceFlag()) {
                         gameSurface.setReduceFlag(true);
                         gameSurface.reduceHealth();
                     }
-
 
                 }
             }

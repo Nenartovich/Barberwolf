@@ -6,6 +6,9 @@ import android.graphics.Paint;
 import android.graphics.Typeface;
 
 public class HealthIndicator extends Indicator {
+    final static int strokeWidth = 5;
+    final static int textSize = 100;
+    final static int textColor = Color.BLACK;
 
     private GameSurface gameSurface;
 
@@ -19,10 +22,12 @@ public class HealthIndicator extends Indicator {
     public void draw(Canvas canvas) {
         Paint fontPaint;
         fontPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        //fontPaint.setColor(Color.WHITE);
         fontPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
-        fontPaint.setTextSize(100);
+        fontPaint.setTextSize(textSize);
         fontPaint.setStyle(Paint.Style.STROKE);
-        canvas.drawText("Health: " + this.value, 100, 100, fontPaint);
+        fontPaint.setStrokeWidth(strokeWidth);
+        fontPaint.setColor(textColor);
+
+        canvas.drawText("Health: " + this.value, x, y, fontPaint);
     }
 }

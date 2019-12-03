@@ -83,6 +83,10 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
         healthIndicator.value = healthIndicator.value - 1;
     }
 
+    public void increaseScore() {
+        scoreIndicator.value = scoreIndicator.value + 1;
+    }
+
     public void setObstaclesList(List<Obstacle> list) {
         for (int i = 0; i < list.size(); i++) {
             obstaclesList.get(i).x = list.get(i).getX();
