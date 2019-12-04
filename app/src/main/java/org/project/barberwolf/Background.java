@@ -21,7 +21,6 @@ public class Background extends GameObject {
 
     public Bitmap getBitmap() {
         return this.bitmap;
-
     }
 
 

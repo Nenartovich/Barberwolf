@@ -5,6 +5,9 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.media.AudioAttributes;
 import android.media.MediaPlayer;
 import android.media.SoundPool;
@@ -43,6 +46,13 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     private MediaPlayer backgroundSound;
     private ArrayList<Integer> sheepSoundIds = new ArrayList<>();
     private ArrayList<Integer> wolfSoundIds = new ArrayList<>();
+
+    final static float pauseButtonBoundX = 1850;
+    final static float pauseButtonBoundY = 150;
+    final static float stopPauseButtonBoundX = 1850;
+    final static float stopPauseButtonBoundYMin = 200;
+    final static float stopPauseButtonBoundYMax = 350;
+    private boolean pausePressed = false;
 
     public GameSurface(Context context) {
         super(context);
@@ -116,6 +126,15 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        if (event.getX() >= pauseButtonBoundX && event.getY() <= pauseButtonBoundY) {
+            pausePressed = true;
+        }
+
+        if (event.getX() >= stopPauseButtonBoundX && event.getY() >= stopPauseButtonBoundYMin
+                && event.getY() <= stopPauseButtonBoundYMax) {
+            pausePressed = false;
+        }
+
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             wolf.setOldY(event.getY());
         }
@@ -162,6 +181,10 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void update() {
+        if (pausePressed) {
+            return;
+        }
+
         for (Grass grassElement : grassList) {
             grassElement.update();
         }
@@ -179,6 +202,18 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
         super.draw(canvas);
 
         background.draw(canvas);
+
+        if (pausePressed) {
+            Paint fontPaint;
+            fontPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+            fontPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+            fontPaint.setTextSize(150);
+            fontPaint.setStyle(Paint.Style.STROKE);
+            fontPaint.setStrokeWidth(7);
+            fontPaint.setColor(Color.BLUE);
+
+            canvas.drawText("Pause Pressed", 500, 600, fontPaint);
+        }
 
         healthIndicator.draw(canvas);
         scoreIndicator.draw(canvas);

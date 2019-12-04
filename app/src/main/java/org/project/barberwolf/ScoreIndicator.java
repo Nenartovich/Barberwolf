@@ -30,5 +30,6 @@ public class ScoreIndicator extends Indicator {
         fontPaint.setStyle(Paint.Style.STROKE);
 
         canvas.drawText("Score: " + this.value, x, y, fontPaint);
+
     }
 }
