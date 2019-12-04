@@ -17,5 +17,4 @@ public class GameField extends AppCompatActivity {
 
         this.setContentView(new GameSurface(this));
     }
-
 }

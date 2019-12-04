@@ -56,9 +56,15 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     final static float stopPauseButtonBoundYMin = 200;
     final static float stopPauseButtonBoundYMax = 350;
 
+    final static float restartButtonBoundX = 1850;
+    final static float restartButtonBoundYMin = 400;
+    final static float restartButtonBoundYMax = 550;
+
     final static float backToMainMenuButtonBoundX = 1850;
-    final static float backToMainMenuButtonBoundYMin = 400;
-    final static float backToMainMenuButtonBoundYMax = 550;
+    final static float backToMainMenuButtonBoundYMin = 600;
+    final static float backToMainMenuButtonBoundYMax = 750;
+
+    private boolean gameOver = false;
 
     public GameSurface(Context context) {
         super(context);
@@ -143,11 +149,18 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
             return true;
         }
 
+        if (event.getX() >= restartButtonBoundX && event.getY() >= restartButtonBoundYMin &&
+                event.getY() <= restartButtonBoundYMax) {
+            ((Activity) getContext()).recreate();
+            return true;
+        }
+
         if (event.getX() >= backToMainMenuButtonBoundX && event.getY() >= backToMainMenuButtonBoundYMin &&
                 event.getY() <= backToMainMenuButtonBoundYMax) {
             ((Activity) getContext()).finish();
             return true;
         }
+
 
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             wolf.setOldY(event.getY());
@@ -196,7 +209,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void update() {
-        if (pausePressed) {
+        if (pausePressed || gameOver) {
             return;
         }
 
@@ -218,7 +231,17 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
 
         background.draw(canvas);
 
-        if (pausePressed) {
+        if (gameOver) {
+            Paint fontPaint;
+            fontPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+            fontPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+            fontPaint.setTextSize(150);
+            fontPaint.setStyle(Paint.Style.STROKE);
+            fontPaint.setStrokeWidth(7);
+            fontPaint.setColor(Color.BLUE);
+
+            canvas.drawText("Game over", 500, 600, fontPaint);
+        } else if (pausePressed) {
             Paint fontPaint;
             fontPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
             fontPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
@@ -228,6 +251,10 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
             fontPaint.setColor(Color.BLUE);
 
             canvas.drawText("Pause Pressed", 500, 600, fontPaint);
+        }
+
+        if (healthIndicator.value <= 0) {
+            gameOver = true;
         }
 
         healthIndicator.draw(canvas);
