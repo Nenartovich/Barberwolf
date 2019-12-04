@@ -114,6 +114,7 @@ public class Wolf extends GameObject {
                 if (obstacle.isGood()) {
                     if (!obstacle.isCaught()) {
                         gameSurface.playSoundSheepCaught();
+                        obstacle.setBitmap(gameSurface.cutSheepBitmap);
                         gameSurface.increaseScore();
                         obstacle.setCaughtFlag(true);
                     }

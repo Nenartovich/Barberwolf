@@ -31,6 +31,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     public Bitmap grassBitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.grass);
     public Bitmap obstacleBitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.obtacle);
     public Bitmap sheepBitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.sheep);
+    public Bitmap cutSheepBitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.cut_sheep);
     public Bitmap backgroundBitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.background);
 
     private int obstacleWidth = 0;

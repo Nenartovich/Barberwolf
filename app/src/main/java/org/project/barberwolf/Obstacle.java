@@ -27,6 +27,10 @@ public class Obstacle extends GameObject {
         this.bitmap = this.createSubImageAt(0, 0);
     }
 
+    public void setBitmap(Bitmap bitmap) {
+        this.bitmap = bitmap;
+    }
+
     public boolean isGood() {
         return good;
     }
