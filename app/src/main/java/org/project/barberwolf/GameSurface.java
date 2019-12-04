@@ -14,6 +14,7 @@ import android.view.SurfaceView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     private GameThread gameThread;
@@ -39,9 +40,9 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     final static int initialScore = 0;
     private SoundPool soundPool;
     private boolean soundPoolLoaded = false;
-    private int soundIdSheepCaught;
-    private int soundIdCryingWolf;
     private MediaPlayer backgroundSound;
+    private ArrayList<Integer> sheepSoundIds = new ArrayList<>();
+    private ArrayList<Integer> wolfSoundIds = new ArrayList<>();
 
     public GameSurface(Context context) {
         super(context);
@@ -72,15 +73,33 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
         backgroundSound.setVolume(0.5f, 0.5f);
         backgroundSound.start();
 
-        this.soundIdSheepCaught = this.soundPool.load(this.getContext(), R.raw.sheep_caught_1, 1);
-        this.soundIdCryingWolf = this.soundPool.load(this.getContext(), R.raw.crying_wolf_7, 1);
+        sheepSoundIds.add(this.soundPool.load(this.getContext(), R.raw.sheep_caught_1, 1));
+        sheepSoundIds.add(this.soundPool.load(this.getContext(), R.raw.sheep_caught_2, 1));
+        sheepSoundIds.add(this.soundPool.load(this.getContext(), R.raw.sheep_caught_3, 1));
+        sheepSoundIds.add(this.soundPool.load(this.getContext(), R.raw.sheep_caught_4, 1));
+        sheepSoundIds.add(this.soundPool.load(this.getContext(), R.raw.sheep_caught_5, 1));
+        wolfSoundIds.add(this.soundPool.load(this.getContext(), R.raw.crying_wolf_1, 1));
+        wolfSoundIds.add(this.soundPool.load(this.getContext(), R.raw.crying_wolf_2, 1));
+        wolfSoundIds.add(this.soundPool.load(this.getContext(), R.raw.crying_wolf_3, 1));
+        wolfSoundIds.add(this.soundPool.load(this.getContext(), R.raw.crying_wolf_4, 1));
+        wolfSoundIds.add(this.soundPool.load(this.getContext(), R.raw.crying_wolf_5, 1));
+        wolfSoundIds.add(this.soundPool.load(this.getContext(), R.raw.crying_wolf_6, 1));
+        wolfSoundIds.add(this.soundPool.load(this.getContext(), R.raw.crying_wolf_7, 1));
+        wolfSoundIds.add(this.soundPool.load(this.getContext(), R.raw.crying_wolf_8, 1));
+    }
+
+    public int getRandomNumber(int bound) {
+        Random random = new Random();
+        return random.nextInt(bound);
     }
 
     public void playSoundSheepCaught() {
         if (this.soundPoolLoaded) {
             float leftVolumn = 0.8f;
             float rightVolumn = 0.8f;
-            this.soundPool.play(this.soundIdSheepCaught, leftVolumn, rightVolumn, 1, 0, 1f);
+            
+            int index = getRandomNumber(sheepSoundIds.size());
+            this.soundPool.play(this.sheepSoundIds.get(index), leftVolumn, rightVolumn, 1, 0, 1f);
         }
     }
 
@@ -88,7 +107,9 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
         if (this.soundPoolLoaded) {
             float leftVolumn = 0.8f;
             float rightVolumn = 0.8f;
-            this.soundPool.play(this.soundIdCryingWolf, leftVolumn, rightVolumn, 1, 0, 1f);
+
+            int index = getRandomNumber(wolfSoundIds.size());
+            this.soundPool.play(this.wolfSoundIds.get(index), leftVolumn, rightVolumn, 1, 0, 1f);
         }
     }
 
@@ -240,8 +261,12 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     public void surfaceDestroyed(SurfaceHolder holder) {
         try {
             backgroundSound.stop();
-            soundPool.stop(soundIdCryingWolf);
-            soundPool.stop(soundIdSheepCaught);
+            for (int index : wolfSoundIds) {
+                soundPool.stop(index);
+            }
+            for (int index : sheepSoundIds) {
+                soundPool.stop(index);
+            }
             this.gameThread.setRunning(false);
             this.gameThread.join();
         } catch (InterruptedException e) {
