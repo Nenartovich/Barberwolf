@@ -1,6 +1,7 @@
 package org.project.barberwolf;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -49,10 +50,15 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
 
     final static float pauseButtonBoundX = 1850;
     final static float pauseButtonBoundY = 150;
+
+    private boolean pausePressed = false;
     final static float stopPauseButtonBoundX = 1850;
     final static float stopPauseButtonBoundYMin = 200;
     final static float stopPauseButtonBoundYMax = 350;
-    private boolean pausePressed = false;
+
+    final static float backToMainMenuButtonBoundX = 1850;
+    final static float backToMainMenuButtonBoundYMin = 400;
+    final static float backToMainMenuButtonBoundYMax = 550;
 
     public GameSurface(Context context) {
         super(context);
@@ -128,11 +134,19 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     public boolean onTouchEvent(MotionEvent event) {
         if (event.getX() >= pauseButtonBoundX && event.getY() <= pauseButtonBoundY) {
             pausePressed = true;
+            return true;
         }
 
-        if (event.getX() >= stopPauseButtonBoundX && event.getY() >= stopPauseButtonBoundYMin
-                && event.getY() <= stopPauseButtonBoundYMax) {
+        if (event.getX() >= stopPauseButtonBoundX && event.getY() >= stopPauseButtonBoundYMin &&
+                event.getY() <= stopPauseButtonBoundYMax) {
             pausePressed = false;
+            return true;
+        }
+
+        if (event.getX() >= backToMainMenuButtonBoundX && event.getY() >= backToMainMenuButtonBoundYMin &&
+                event.getY() <= backToMainMenuButtonBoundYMax) {
+            ((Activity) getContext()).finish();
+            return true;
         }
 
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
@@ -158,6 +172,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
                 }
             }
         }
+
         return true;
     }
 
