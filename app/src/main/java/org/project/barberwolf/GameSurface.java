@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.media.AudioAttributes;
+import android.media.MediaPlayer;
 import android.media.SoundPool;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -37,9 +38,9 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     final static int initialHealth = 100;
     final static int initialScore = 0;
     private SoundPool soundPool;
-    private int IdSheepCaught;
     private boolean soundPoolLoaded = false;
-    private int IdCryingWolf;
+    private int soundIdSheepCaught;
+    private int soundIdCryingWolf;
 
     public GameSurface(Context context) {
         super(context);
@@ -62,20 +63,22 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
             @Override
             public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
                 soundPoolLoaded = true;
-
-                // playSoundBackground();
             }
         });
 
-        this.IdSheepCaught = this.soundPool.load(this.getContext(), R.raw.sheep_caught_1, 1);
-        this.IdCryingWolf = this.soundPool.load(this.getContext(), R.raw.crying_wolf_7, 1);
+        MediaPlayer ourSound = MediaPlayer.create(this.getContext(), R.raw.eminem);
+        ourSound.setLooping(true);
+        ourSound.start();
+
+        this.soundIdSheepCaught = this.soundPool.load(this.getContext(), R.raw.sheep_caught_1, 1);
+        this.soundIdCryingWolf = this.soundPool.load(this.getContext(), R.raw.crying_wolf_7, 1);
     }
 
     public void playSoundSheepCaught() {
         if (this.soundPoolLoaded) {
             float leftVolumn = 0.8f;
             float rightVolumn = 0.8f;
-            this.soundPool.play(this.IdSheepCaught, leftVolumn, rightVolumn, 1, 0, 1f);
+            this.soundPool.play(this.soundIdSheepCaught, leftVolumn, rightVolumn, 1, 0, 1f);
         }
     }
 
@@ -83,7 +86,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
         if (this.soundPoolLoaded) {
             float leftVolumn = 0.8f;
             float rightVolumn = 0.8f;
-            this.soundPool.play(this.IdCryingWolf, leftVolumn, rightVolumn, 1, 0, 1f);
+            this.soundPool.play(this.soundIdCryingWolf, leftVolumn, rightVolumn, 1, 0, 1f);
         }
     }
 
