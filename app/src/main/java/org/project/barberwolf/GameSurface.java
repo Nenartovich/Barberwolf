@@ -6,9 +6,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Typeface;
 import android.media.AudioAttributes;
 import android.media.MediaPlayer;
 import android.media.SoundPool;
@@ -25,6 +22,8 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     private Background background = null;
     private HealthIndicator healthIndicator = null;
     private ScoreIndicator scoreIndicator = null;
+    private GameOverIndicator gameOverIndicator = null;
+    private PauseIndicator pauseIndicator = null;
     private final List<Grass> grassList = new ArrayList<>();
     private Wolf wolf = null;
     private final List<Obstacle> obstaclesList = new ArrayList<>();
@@ -42,6 +41,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
 
     final static int initialHealth = 100;
     final static int initialScore = 0;
+
     private SoundPool soundPool;
     private boolean soundPoolLoaded = false;
     private MediaPlayer backgroundSound;
@@ -228,29 +228,12 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public void draw(Canvas canvas) {
         super.draw(canvas);
-
         background.draw(canvas);
 
         if (gameOver) {
-            Paint fontPaint;
-            fontPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-            fontPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
-            fontPaint.setTextSize(150);
-            fontPaint.setStyle(Paint.Style.STROKE);
-            fontPaint.setStrokeWidth(7);
-            fontPaint.setColor(Color.BLUE);
-
-            canvas.drawText("Game over", 500, 600, fontPaint);
+            gameOverIndicator.draw(canvas);
         } else if (pausePressed) {
-            Paint fontPaint;
-            fontPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-            fontPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
-            fontPaint.setTextSize(150);
-            fontPaint.setStyle(Paint.Style.STROKE);
-            fontPaint.setStrokeWidth(7);
-            fontPaint.setColor(Color.BLUE);
-
-            canvas.drawText("Pause Pressed", 500, 600, fontPaint);
+            pauseIndicator.draw(canvas);
         }
 
         if (healthIndicator.value <= 0) {
@@ -270,31 +253,33 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        this.background = new Background(this, backgroundBitmap, 0, this.getHeight()
+        this.background = new Background(backgroundBitmap, 0, this.getHeight()
                 - backgroundBitmap.getHeight());
 
-        this.healthIndicator = new HealthIndicator(this, initialHealth, 100, 100);
-        this.scoreIndicator = new ScoreIndicator(this, initialScore, 1000, 100);
+        this.healthIndicator = new HealthIndicator(initialHealth, 100, 100);
+        this.scoreIndicator = new ScoreIndicator(initialScore, 1000, 100);
+        this.gameOverIndicator = new GameOverIndicator(500, 600);
+        this.pauseIndicator = new PauseIndicator(500, 600);
 
-        this.grassList.add(new Grass(this, grassBitmap, 0, this.getHeight()
+        this.grassList.add(new Grass(grassBitmap, 0, this.getHeight()
                 - grassBitmap.getHeight()));
-        this.grassList.add(new Grass(this, grassBitmap, grassBitmap.getWidth(),
+        this.grassList.add(new Grass(grassBitmap, grassBitmap.getWidth(),
                 this.getHeight() - grassBitmap.getHeight()));
-        this.grassList.add(new Grass(this, grassBitmap, 2 * grassBitmap.getWidth(),
+        this.grassList.add(new Grass(grassBitmap, 2 * grassBitmap.getWidth(),
                 this.getHeight() - grassBitmap.getHeight()));
-        this.grassList.add(new Grass(this, grassBitmap, 3 * grassBitmap.getWidth(),
+        this.grassList.add(new Grass(grassBitmap, 3 * grassBitmap.getWidth(),
                 this.getHeight() - grassBitmap.getHeight()));
-        this.grassList.add(new Grass(this, grassBitmap, 4 * grassBitmap.getWidth(),
+        this.grassList.add(new Grass(grassBitmap, 4 * grassBitmap.getWidth(),
                 this.getHeight() - grassBitmap.getHeight()));
-        this.grassList.add(new Grass(this, grassBitmap, 5 * grassBitmap.getWidth(),
+        this.grassList.add(new Grass(grassBitmap, 5 * grassBitmap.getWidth(),
                 this.getHeight() - grassBitmap.getHeight()));
-        this.grassList.add(new Grass(this, grassBitmap, 6 * grassBitmap.getWidth(),
+        this.grassList.add(new Grass(grassBitmap, 6 * grassBitmap.getWidth(),
                 this.getHeight() - grassBitmap.getHeight()));
-        this.grassList.add(new Grass(this, grassBitmap, 7 * grassBitmap.getWidth(),
+        this.grassList.add(new Grass(grassBitmap, 7 * grassBitmap.getWidth(),
                 this.getHeight() - grassBitmap.getHeight()));
-        this.grassList.add(new Grass(this, grassBitmap, 8 * grassBitmap.getWidth(),
+        this.grassList.add(new Grass(grassBitmap, 8 * grassBitmap.getWidth(),
                 this.getHeight() - grassBitmap.getHeight()));
-        this.grassList.add(new Grass(this, grassBitmap, 9 * grassBitmap.getWidth(),
+        this.grassList.add(new Grass(grassBitmap, 9 * grassBitmap.getWidth(),
                 this.getHeight() - grassBitmap.getHeight()));
 
         Bitmap wolfBitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.wolf);

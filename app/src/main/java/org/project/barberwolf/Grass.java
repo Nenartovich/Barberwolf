@@ -10,14 +10,10 @@ public class Grass extends GameObject {
     private int movingVectorX = -20;
     private int movingVectorY = 0;
 
-    private GameSurface gameSurface;
-
     final static int grassMaxCoef = 9;
 
-    public Grass(GameSurface gameSurface, Bitmap image, int x, int y) {
+    public Grass(Bitmap image, int x, int y) {
         super(image, 1, 1, x, y);
-
-        this.gameSurface = gameSurface;
 
         this.bitmap = this.createSubImageAt(0, 0);
     }
@@ -26,7 +22,6 @@ public class Grass extends GameObject {
         return this.bitmap;
 
     }
-
 
     public void update() {
         this.x = x + movingVectorX;

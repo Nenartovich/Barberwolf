@@ -24,7 +24,6 @@ public class Obstacle extends GameObject {
         super(image, 1, 1, x, y);
 
         this.gameSurface = gameSurface;
-
         this.bitmap = this.createSubImageAt(0, 0);
     }
 
@@ -38,11 +37,6 @@ public class Obstacle extends GameObject {
 
     public void setCaughtFlag(boolean flag) {
         caught = flag;
-    }
-
-    public void setMovingVector(int newMovingVectorX, int newMovingVectorY) {
-        movingVectorX = newMovingVectorX;
-        movingVectorY = newMovingVectorY;
     }
 
     public Bitmap getBitmap() {
