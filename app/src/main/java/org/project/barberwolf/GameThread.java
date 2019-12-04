@@ -33,7 +33,7 @@ public class GameThread extends Thread {
             }
 
             try {
-                sleep(10);
+                sleep(0);  // TODO: affects fps
             } catch (InterruptedException ignored) {
             }
 

@@ -41,6 +41,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     private boolean soundPoolLoaded = false;
     private int soundIdSheepCaught;
     private int soundIdCryingWolf;
+    private MediaPlayer backgroundSound;
 
     public GameSurface(Context context) {
         super(context);
@@ -66,9 +67,10 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
             }
         });
 
-        MediaPlayer ourSound = MediaPlayer.create(this.getContext(), R.raw.eminem);
-        ourSound.setLooping(true);
-        ourSound.start();
+        backgroundSound = MediaPlayer.create(this.getContext(), R.raw.eminem);
+        backgroundSound.setLooping(true);
+        backgroundSound.setVolume(0.5f, 0.5f);
+        backgroundSound.start();
 
         this.soundIdSheepCaught = this.soundPool.load(this.getContext(), R.raw.sheep_caught_1, 1);
         this.soundIdCryingWolf = this.soundPool.load(this.getContext(), R.raw.crying_wolf_7, 1);
@@ -236,13 +238,14 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
-        while (true) {
-            try {
-                this.gameThread.setRunning(false);
-                this.gameThread.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+        try {
+            backgroundSound.stop();
+            soundPool.stop(soundIdCryingWolf);
+            soundPool.stop(soundIdSheepCaught);
+            this.gameThread.setRunning(false);
+            this.gameThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 }
