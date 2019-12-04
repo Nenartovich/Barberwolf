@@ -18,6 +18,8 @@ public class Obstacle extends GameObject {
 
     private GameSurface gameSurface;
 
+    final static double sheepProbability = 0.5;
+
     public Obstacle(GameSurface gameSurface, Bitmap image, int x, int y) {
         super(image, 1, 1, x, y);
 
@@ -56,8 +58,7 @@ public class Obstacle extends GameObject {
             for (Obstacle obstacle : obtaclesList) {
                 obstacle.setCaughtFlag(false);
                 if (obstacle.getX() <= -gameSurface.getObstacleWidth()) {
-                    int randomNumber = (int) (Math.random() * 7);
-                    if (randomNumber >= 0 && randomNumber <= 2) {
+                    if (Math.random() <= sheepProbability) {
                         obstacle.bitmap = this.gameSurface.sheepBitmap;
                         if (!obstacle.good) {
                             obstacle.y -= this.gameSurface.sheepBitmap.getHeight() / 3;
@@ -72,8 +73,7 @@ public class Obstacle extends GameObject {
                         obstacle.good = false;
                     }
 
-                    randomNumber = (int) (Math.random() * 100) % 3 + 1;
-
+                    int randomNumber = (int) ((Math.random() * 100) % 3 + 1);
                     if (obstacle.floor < randomNumber) {
                         ++obstacle.floor;
                         obstacle.y -= obstacle.getHeight();
