@@ -33,6 +33,9 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     public Bitmap sheepBitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.sheep);
     public Bitmap cutSheepBitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.cut_sheep);
     public Bitmap backgroundBitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.background);
+    public Bitmap pauseButtonBitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.pause_button);
+    public Bitmap playButtonBitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.play_button);
+    public Bitmap restartButtonBitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.restart_button);
 
     private int obstacleWidth = 0;
 
@@ -57,7 +60,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     final static float stopPauseButtonBoundYMin = 200;
     final static float stopPauseButtonBoundYMax = 350;
 
-    final static float restartButtonBoundX = 1850;
+    float restartButtonBoundX = 1850;
     final static float restartButtonBoundYMin = 400;
     final static float restartButtonBoundYMax = 550;
 
@@ -254,11 +257,11 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        this.background = new Background(backgroundBitmap, 0, this.getHeight()
+        this.background = new Background(this, backgroundBitmap, 0, this.getHeight()
                 - backgroundBitmap.getHeight());
 
-        this.healthIndicator = new HealthIndicator(initialHealth, 100, 100);
-        this.scoreIndicator = new ScoreIndicator(initialScore, 1000, 100);
+        this.healthIndicator = new HealthIndicator(initialHealth, 50, 100);
+        this.scoreIndicator = new ScoreIndicator(initialScore, 500, 100);
         this.gameOverIndicator = new GameOverIndicator(this,500, 600);
         this.pauseIndicator = new PauseIndicator(500, 600);
 

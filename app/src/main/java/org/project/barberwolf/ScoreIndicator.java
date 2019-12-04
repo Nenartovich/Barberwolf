@@ -6,7 +6,7 @@ import android.graphics.Paint;
 
 public class ScoreIndicator extends Indicator {
     final static int strokeWidth = 5;
-    final static int textSize = 100;
+    final static int textSize = 75;
     final static int textColor = Color.BLACK;
 
     public ScoreIndicator(int value, int x, int y) {
