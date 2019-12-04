@@ -95,21 +95,21 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
 
     public void playSoundSheepCaught() {
         if (this.soundPoolLoaded) {
-            float leftVolumn = 0.8f;
-            float rightVolumn = 0.8f;
-            
+            float leftVolume = 0.8f;
+            float rightVolume = 0.8f;
+
             int index = getRandomNumber(sheepSoundIds.size());
-            this.soundPool.play(this.sheepSoundIds.get(index), leftVolumn, rightVolumn, 1, 0, 1f);
+            this.soundPool.play(this.sheepSoundIds.get(index), leftVolume, rightVolume, 1, 0, 1f);
         }
     }
 
     public void playSoundCryingWolf() {
         if (this.soundPoolLoaded) {
-            float leftVolumn = 0.8f;
-            float rightVolumn = 0.8f;
+            float leftVolume = 0.8f;
+            float rightVolume = 0.8f;
 
             int index = getRandomNumber(wolfSoundIds.size());
-            this.soundPool.play(this.wolfSoundIds.get(index), leftVolumn, rightVolumn, 1, 0, 1f);
+            this.soundPool.play(this.wolfSoundIds.get(index), leftVolume, rightVolume, 1, 0, 1f);
         }
     }
 
