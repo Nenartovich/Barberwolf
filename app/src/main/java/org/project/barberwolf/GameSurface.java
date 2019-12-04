@@ -259,7 +259,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
 
         this.healthIndicator = new HealthIndicator(initialHealth, 100, 100);
         this.scoreIndicator = new ScoreIndicator(initialScore, 1000, 100);
-        this.gameOverIndicator = new GameOverIndicator(500, 600);
+        this.gameOverIndicator = new GameOverIndicator(this,500, 600);
         this.pauseIndicator = new PauseIndicator(500, 600);
 
         this.grassList.add(new Grass(grassBitmap, 0, this.getHeight()
