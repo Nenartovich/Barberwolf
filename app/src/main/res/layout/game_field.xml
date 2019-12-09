@@ -1,6 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/gameFrame"
+    android:screenOrientation="landscape"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal" />
+    tools:context=".GameField">
+
+    <org.project.barberwolf.GameSurface
+        android:id="@+id/gameSurface"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".GameField"/>
+
+    <RelativeLayout
+        android:id="@+id/gameMenu"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".GameField">
+
+        <ImageButton
+            android:id="@+id/pauseButton"
+            android:src="@drawable/pause_button"
+            android:background="@null"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:contentDescription="@string/gamePause"/>
+
+    </RelativeLayout>
+
+</FrameLayout>

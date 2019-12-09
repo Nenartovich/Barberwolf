@@ -9,10 +9,12 @@ import android.graphics.Canvas;
 import android.media.AudioAttributes;
 import android.media.MediaPlayer;
 import android.media.SoundPool;
+import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import java.nio.channels.NonReadableChannelException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -71,10 +73,19 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     private boolean gameOver = false;
 
     public GameSurface(Context context) {
-        super(context);
+        this(context, null);
+    }
+
+    public GameSurface(Context context, AttributeSet attrs) {
+        this(context, attrs, 0);
+    }
+
+    public GameSurface(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
         this.setFocusable(true);
         this.getHolder().addCallback(this);
         this.initSoundPool();
+
     }
 
     private void initSoundPool() {
