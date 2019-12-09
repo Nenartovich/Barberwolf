@@ -5,15 +5,13 @@ import android.graphics.Bitmap;
 public class GameObject {
     protected Bitmap image;
 
-
     protected final int rowCount;
     protected final int colCount;
 
-    protected final int screenWidth;
-    protected final int screenHeidth;
+    protected final int imageWidth;
+    protected final int imageHeight;
 
     protected final int width;
-
 
     protected final int height;
     protected int x;
@@ -28,11 +26,11 @@ public class GameObject {
         this.x = x;
         this.y = y;
 
-        this.screenWidth = image.getWidth();
-        this.screenHeidth = image.getHeight();
+        this.imageWidth = image.getWidth();
+        this.imageHeight = image.getHeight();
 
-        this.width = this.screenWidth / colCount;
-        this.height = this.screenHeidth / rowCount;
+        this.width = this.imageWidth / colCount;
+        this.height = this.imageHeight / rowCount;
     }
 
     protected Bitmap createSubImageAt(int row, int col) {
