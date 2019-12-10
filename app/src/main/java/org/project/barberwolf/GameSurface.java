@@ -12,6 +12,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -20,10 +21,7 @@ import java.util.Random;
 
 public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     private GameThread gameThread;
-//    private HealthIndicator healthIndicator = null;
-//    private ScoreIndicator scoreIndicator = null;
-//    private GameOverIndicator gameOverIndicator = null;
-//    private PauseIndicator pauseIndicator = null;
+    private GameField gameField;
     private final List<Grass> grassList = new ArrayList<>();
     private Wolf wolf = null;
     private final List<Obstacle> obstaclesList = new ArrayList<>();
@@ -36,18 +34,8 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
 
     private int obstacleWidth = 0;
 
-    final static int wolfPositionX = 250;
-    final static int obstacleNormalCoef = 240;
-    final static int obstacleOffset = 20;
-
-    final static int initialHealth = 100;
-    final static int initialScore = 0;
-
-    int health = initialHealth;
-    int score = initialScore;
-
-    String healthString = "Health: " + health;
-    String scoreString = "Score: " + score;
+    int health = this.getResources().getInteger(R.integer.maxHealth);
+    int score = this.getResources().getInteger(R.integer.initScore);
 
     private SoundPool soundPool;
     private boolean soundPoolLoaded = false;
@@ -55,8 +43,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     private ArrayList<Integer> sheepSoundIds = new ArrayList<>();
     private ArrayList<Integer> wolfSoundIds = new ArrayList<>();
 
-    private boolean pausePressed = false;
-
+    private boolean pause = false;
     private boolean gameOver = false;
 
     public GameSurface(Context context) {
@@ -72,7 +59,66 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
         this.setFocusable(true);
         this.getHolder().addCallback(this);
         this.initSoundPool();
+        this.gameField = (GameField) this.getContext();
+    }
 
+    public void initSurface() {
+        grassList.clear();
+
+        grassList.add(new Grass(grassBitmap, 0, getHeight()
+                - grassBitmap.getHeight()));
+        grassList.add(new Grass(grassBitmap, grassBitmap.getWidth(),
+                getHeight() - grassBitmap.getHeight()));
+        grassList.add(new Grass(grassBitmap, 2 * grassBitmap.getWidth(),
+                getHeight() - grassBitmap.getHeight()));
+        grassList.add(new Grass(grassBitmap, 3 * grassBitmap.getWidth(),
+                getHeight() - grassBitmap.getHeight()));
+        grassList.add(new Grass(grassBitmap, 4 * grassBitmap.getWidth(),
+                getHeight() - grassBitmap.getHeight()));
+        grassList.add(new Grass(grassBitmap, 5 * grassBitmap.getWidth(),
+                getHeight() - grassBitmap.getHeight()));
+        grassList.add(new Grass(grassBitmap, 6 * grassBitmap.getWidth(),
+                getHeight() - grassBitmap.getHeight()));
+        grassList.add(new Grass(grassBitmap, 7 * grassBitmap.getWidth(),
+                getHeight() - grassBitmap.getHeight()));
+        grassList.add(new Grass(grassBitmap, 8 * grassBitmap.getWidth(),
+                getHeight() - grassBitmap.getHeight()));
+        grassList.add(new Grass(grassBitmap, 9 * grassBitmap.getWidth(),
+                getHeight() - grassBitmap.getHeight()));
+
+        Bitmap wolfBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.wolf);
+
+        this.wolf = new Wolf(this, wolfBitmap,
+                getResources().getInteger(R.integer.wolfInitX),
+                getHeight() - grassBitmap.getHeight() - wolfBitmap.getHeight() / 2);
+
+
+        int coefficient = getResources().getInteger(R.integer.obstacleNormalCoef);
+        int offset = getResources().getInteger(R.integer.obstacleOffset);
+
+        setObstacleWidth(wolfBitmap.getWidth() * 3 / coefficient * offset + offset);
+
+        obstaclesList.clear();
+
+        Obstacle newObstacle1 = new Obstacle(this, obstacleBitmap, 5 * obstacleWidth,
+                this.getHeight() - grassBitmap.getHeight() - obstacleBitmap.getHeight());
+        this.obstaclesList.add(newObstacle1);
+
+        Obstacle newObstacle2 = new Obstacle(this, obstacleBitmap, 7 * obstacleWidth,
+                this.getHeight() - grassBitmap.getHeight() - obstacleBitmap.getHeight());
+        this.obstaclesList.add(newObstacle2);
+
+        Obstacle newObstacle3 = new Obstacle(this, obstacleBitmap, 9 * obstacleWidth,
+                this.getHeight() - grassBitmap.getHeight() - obstacleBitmap.getHeight());
+        this.obstaclesList.add(newObstacle3);
+
+        health = getResources().getInteger(R.integer.maxHealth);
+        score = getResources().getInteger(R.integer.initScore);
+
+        hideMessage();
+
+        pause = false;
+        gameOver = false;
     }
 
     private void initSoundPool() {
@@ -119,8 +165,8 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
 
     public void playSoundSheepCaught() {
         if (this.soundPoolLoaded) {
-            float leftVolume = 0.8f;
-            float rightVolume = 0.8f;
+            float leftVolume = 0.15f;
+            float rightVolume = 0.15f;
 
             int index = getRandomNumber(sheepSoundIds.size());
             this.soundPool.play(this.sheepSoundIds.get(index), leftVolume, rightVolume, 1, 0, 1f);
@@ -129,8 +175,8 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
 
     public void playSoundCryingWolf() {
         if (this.soundPoolLoaded) {
-            float leftVolume = 0.8f;
-            float rightVolume = 0.8f;
+            float leftVolume = 0.15f;
+            float rightVolume = 0.15f;
 
             int index = getRandomNumber(wolfSoundIds.size());
             this.soundPool.play(this.wolfSoundIds.get(index), leftVolume, rightVolume, 1, 0, 1f);
@@ -168,20 +214,17 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void reduceHealth() {
-        health -= 1;
+        if (health > 0) {
+            --health;
+        }
+        if (health <= 0) {
+            setGameOver();
+        }
     }
 
     public void increaseScore() {
         score += 10;
     }
-
-//    public void reduceHealth() {
-////        healthIndicator.value = healthIndicator.value - 1;
-//    }
-//
-//    public void increaseScore() {
-////        scoreIndicator.value = scoreIndicator.value + 10;
-//    }
 
     public void setObstaclesList(List<Obstacle> list) {
         for (int i = 0; i < list.size(); i++) {
@@ -195,7 +238,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void update() {
-        if (pausePressed || gameOver) {
+        if (pause || gameOver) {
             return;
         }
 
@@ -210,42 +253,51 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
         }
     }
 
+    public void printMessage(String messageString) {
+        TextView message = gameField.getMessageView();
+        message.setText(messageString);
+        message.setVisibility(View.VISIBLE);
+    }
 
+    public void hideMessage(){
+        TextView message = gameField.getMessageView();
+        message.setVisibility(View.GONE);
+    }
+
+    public void setPause() {
+        if (!gameOver) {
+            printMessage(getResources().getString(R.string.gamePause));
+            pause = true;
+        }
+    }
+
+    public void setResume() {
+        if (pause) {
+            hideMessage();
+            pause = false;
+        }
+    }
+
+    public void setGameOver() {
+        printMessage(getResources().getString(R.string.gameOver));
+        gameOver = true;
+    }
+
+    @SuppressLint("SetTextI18n")
     @Override
     public void draw(Canvas canvas) {
         super.draw(canvas);
         canvas.drawBitmap(backgroundBitmap, 0, 0, null);
 
-//        if (gameOver) {
-//            gameOverIndicator.draw(canvas);
-//        }
-//        } else if (pausePressed) {
-//            pauseIndicator.draw(canvas);
-//        }
+        GameField field = (GameField) this.getContext();
 
-        if (health <= 0) {
-            gameOver = true;
-        }
-
-//        healthIndicator.draw(canvas);
-//        scoreIndicator.draw(canvas);
-
-//        This functions return null
-        TextView healthView = findViewById(R.id.health);
-        TextView scoreView = findViewById(R.id.score);
-
-        healthString = "Health: " + this.health;
-        scoreString = "Score: " + this.score;
-
-        System.err.println(healthString);
-        System.err.println(healthView);
-
-//        healthView.setText(healthString);
-//        scoreView.setText(scoreString);
+        field.getHealthView().setText("Health: " + this.health);
+        field.getScoreView().setText("Score: " + this.score);
 
         for (Grass grassElement : grassList) {
             grassElement.draw(canvas);
         }
+
         wolf.draw(canvas);
         for (Obstacle obstacleElement : obstaclesList) {
             obstacleElement.draw(canvas);
@@ -254,50 +306,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-//        this.healthIndicator = new HealthIndicator(initialHealth, 50, 100);
-//        this.scoreIndicator = new ScoreIndicator(initialScore, 500, 100);
-//        this.gameOverIndicator = new GameOverIndicator(this,500, 600);
-//        this.pauseIndicator = new PauseIndicator(500, 600);
-
-        this.grassList.add(new Grass(grassBitmap, 0, this.getHeight()
-                - grassBitmap.getHeight()));
-        this.grassList.add(new Grass(grassBitmap, grassBitmap.getWidth(),
-                this.getHeight() - grassBitmap.getHeight()));
-        this.grassList.add(new Grass(grassBitmap, 2 * grassBitmap.getWidth(),
-                this.getHeight() - grassBitmap.getHeight()));
-        this.grassList.add(new Grass(grassBitmap, 3 * grassBitmap.getWidth(),
-                this.getHeight() - grassBitmap.getHeight()));
-        this.grassList.add(new Grass(grassBitmap, 4 * grassBitmap.getWidth(),
-                this.getHeight() - grassBitmap.getHeight()));
-        this.grassList.add(new Grass(grassBitmap, 5 * grassBitmap.getWidth(),
-                this.getHeight() - grassBitmap.getHeight()));
-        this.grassList.add(new Grass(grassBitmap, 6 * grassBitmap.getWidth(),
-                this.getHeight() - grassBitmap.getHeight()));
-        this.grassList.add(new Grass(grassBitmap, 7 * grassBitmap.getWidth(),
-                this.getHeight() - grassBitmap.getHeight()));
-        this.grassList.add(new Grass(grassBitmap, 8 * grassBitmap.getWidth(),
-                this.getHeight() - grassBitmap.getHeight()));
-        this.grassList.add(new Grass(grassBitmap, 9 * grassBitmap.getWidth(),
-                this.getHeight() - grassBitmap.getHeight()));
-
-        Bitmap wolfBitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.wolf);
-        this.wolf = new Wolf(this, wolfBitmap, wolfPositionX, this.getHeight() -
-                grassBitmap.getHeight() - wolfBitmap.getHeight() / 2);
-
-
-        setObstacleWidth(wolfBitmap.getWidth() * 3 / obstacleNormalCoef * obstacleOffset + obstacleOffset);
-        Obstacle newObstacle1 = new Obstacle(this, obstacleBitmap, 5 * obstacleWidth,
-                this.getHeight() - grassBitmap.getHeight() - obstacleBitmap.getHeight());
-        this.obstaclesList.add(newObstacle1);
-
-        Obstacle newObstacle2 = new Obstacle(this, obstacleBitmap, 7 * obstacleWidth,
-                this.getHeight() - grassBitmap.getHeight() - obstacleBitmap.getHeight());
-        this.obstaclesList.add(newObstacle2);
-
-        Obstacle newObstacle3 = new Obstacle(this, obstacleBitmap, 9 * obstacleWidth,
-                this.getHeight() - grassBitmap.getHeight() - obstacleBitmap.getHeight());
-        this.obstaclesList.add(newObstacle3);
-
+        initSurface();
         this.gameThread = new GameThread(this, holder);
         this.gameThread.setRunning(true);
         this.gameThread.start();

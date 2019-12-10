@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="wolfInitX">250</integer>
+    <integer name="obstacleNormalCoef">240</integer>
+    <integer name="obstacleOffset">20</integer>
+    <integer name="maxHealth">100</integer>
+    <integer name="initScore">0</integer>
+</resources>
