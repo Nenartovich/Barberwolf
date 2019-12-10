@@ -1,7 +1,6 @@
 package org.project.barberwolf;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -13,19 +12,18 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.widget.TextView;
 
-import java.nio.channels.NonReadableChannelException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     private GameThread gameThread;
-    private Background background = null;
-    private HealthIndicator healthIndicator = null;
-    private ScoreIndicator scoreIndicator = null;
-    private GameOverIndicator gameOverIndicator = null;
-    private PauseIndicator pauseIndicator = null;
+//    private HealthIndicator healthIndicator = null;
+//    private ScoreIndicator scoreIndicator = null;
+//    private GameOverIndicator gameOverIndicator = null;
+//    private PauseIndicator pauseIndicator = null;
     private final List<Grass> grassList = new ArrayList<>();
     private Wolf wolf = null;
     private final List<Obstacle> obstaclesList = new ArrayList<>();
@@ -35,9 +33,6 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     public Bitmap sheepBitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.sheep);
     public Bitmap cutSheepBitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.cut_sheep);
     public Bitmap backgroundBitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.background);
-    public Bitmap pauseButtonBitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.pause_button);
-    public Bitmap playButtonBitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.play_button);
-    public Bitmap restartButtonBitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.restart_button);
 
     private int obstacleWidth = 0;
 
@@ -48,27 +43,19 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     final static int initialHealth = 100;
     final static int initialScore = 0;
 
+    int health = initialHealth;
+    int score = initialScore;
+
+    String healthString = "Health: " + health;
+    String scoreString = "Score: " + score;
+
     private SoundPool soundPool;
     private boolean soundPoolLoaded = false;
     private MediaPlayer backgroundSound;
     private ArrayList<Integer> sheepSoundIds = new ArrayList<>();
     private ArrayList<Integer> wolfSoundIds = new ArrayList<>();
 
-    final static float pauseButtonBoundX = 1850;
-    final static float pauseButtonBoundY = 150;
-
     private boolean pausePressed = false;
-    final static float stopPauseButtonBoundX = 1850;
-    final static float stopPauseButtonBoundYMin = 200;
-    final static float stopPauseButtonBoundYMax = 350;
-
-    float restartButtonBoundX = 1850;
-    final static float restartButtonBoundYMin = 400;
-    final static float restartButtonBoundYMax = 550;
-
-    final static float backToMainMenuButtonBoundX = 1850;
-    final static float backToMainMenuButtonBoundYMin = 600;
-    final static float backToMainMenuButtonBoundYMax = 750;
 
     private boolean gameOver = false;
 
@@ -153,30 +140,6 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (event.getX() >= pauseButtonBoundX && event.getY() <= pauseButtonBoundY) {
-            pausePressed = true;
-            return true;
-        }
-
-        if (event.getX() >= stopPauseButtonBoundX && event.getY() >= stopPauseButtonBoundYMin &&
-                event.getY() <= stopPauseButtonBoundYMax) {
-            pausePressed = false;
-            return true;
-        }
-
-        if (event.getX() >= restartButtonBoundX && event.getY() >= restartButtonBoundYMin &&
-                event.getY() <= restartButtonBoundYMax) {
-            ((Activity) getContext()).recreate();
-            return true;
-        }
-
-        if (event.getX() >= backToMainMenuButtonBoundX && event.getY() >= backToMainMenuButtonBoundYMin &&
-                event.getY() <= backToMainMenuButtonBoundYMax) {
-            ((Activity) getContext()).finish();
-            return true;
-        }
-
-
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             wolf.setOldY(event.getY());
         }
@@ -205,12 +168,20 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void reduceHealth() {
-        healthIndicator.value = healthIndicator.value - 1;
+        health -= 1;
     }
 
     public void increaseScore() {
-        scoreIndicator.value = scoreIndicator.value + 10;
+        score += 10;
     }
+
+//    public void reduceHealth() {
+////        healthIndicator.value = healthIndicator.value - 1;
+//    }
+//
+//    public void increaseScore() {
+////        scoreIndicator.value = scoreIndicator.value + 10;
+//    }
 
     public void setObstaclesList(List<Obstacle> list) {
         for (int i = 0; i < list.size(); i++) {
@@ -243,20 +214,35 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public void draw(Canvas canvas) {
         super.draw(canvas);
-        background.draw(canvas);
+        canvas.drawBitmap(backgroundBitmap, 0, 0, null);
 
-        if (gameOver) {
-            gameOverIndicator.draw(canvas);
-        } else if (pausePressed) {
-            pauseIndicator.draw(canvas);
-        }
+//        if (gameOver) {
+//            gameOverIndicator.draw(canvas);
+//        }
+//        } else if (pausePressed) {
+//            pauseIndicator.draw(canvas);
+//        }
 
-        if (healthIndicator.value <= 0) {
+        if (health <= 0) {
             gameOver = true;
         }
 
-        healthIndicator.draw(canvas);
-        scoreIndicator.draw(canvas);
+//        healthIndicator.draw(canvas);
+//        scoreIndicator.draw(canvas);
+
+//        This functions return null
+        TextView healthView = findViewById(R.id.health);
+        TextView scoreView = findViewById(R.id.score);
+
+        healthString = "Health: " + this.health;
+        scoreString = "Score: " + this.score;
+
+        System.err.println(healthString);
+        System.err.println(healthView);
+
+//        healthView.setText(healthString);
+//        scoreView.setText(scoreString);
+
         for (Grass grassElement : grassList) {
             grassElement.draw(canvas);
         }
@@ -268,13 +254,10 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        this.background = new Background(this, backgroundBitmap, 0, this.getHeight()
-                - backgroundBitmap.getHeight());
-
-        this.healthIndicator = new HealthIndicator(initialHealth, 50, 100);
-        this.scoreIndicator = new ScoreIndicator(initialScore, 500, 100);
-        this.gameOverIndicator = new GameOverIndicator(this,500, 600);
-        this.pauseIndicator = new PauseIndicator(500, 600);
+//        this.healthIndicator = new HealthIndicator(initialHealth, 50, 100);
+//        this.scoreIndicator = new ScoreIndicator(initialScore, 500, 100);
+//        this.gameOverIndicator = new GameOverIndicator(this,500, 600);
+//        this.pauseIndicator = new PauseIndicator(500, 600);
 
         this.grassList.add(new Grass(grassBitmap, 0, this.getHeight()
                 - grassBitmap.getHeight()));

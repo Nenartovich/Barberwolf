@@ -25,10 +25,10 @@
 
     <Button
         android:id="@+id/exitButton"
+        android:text="@string/exit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/settingsButton"
-        android:text="@string/exit"
         android:layout_centerHorizontal="true"/>
 
 </RelativeLayout>

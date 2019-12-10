@@ -11,7 +11,7 @@
         android:id="@+id/gameSurface"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".GameField"/>
+        tools:context=".GameField" />
 
     <RelativeLayout
         android:id="@+id/gameMenu"
@@ -28,6 +28,46 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"
             android:contentDescription="@string/gamePause"/>
+
+        <ImageButton
+            android:id="@+id/playButton"
+            android:src="@drawable/play_button"
+            android:background="@null"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toStartOf="@id/pauseButton"
+            android:contentDescription="@string/gamePause"/>
+
+        <ImageButton
+            android:id="@+id/restartButton"
+            android:src="@drawable/restart_button"
+            android:background="@null"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toStartOf="@id/playButton"
+            android:contentDescription="@string/gamePause"/>
+
+        <TextView
+            android:id="@+id/health"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="false"
+            android:background="@null"
+            android:textColor="@color/colorBlack"
+            android:textSize="36sp"
+            android:fontFamily="@font/ribeye_marrow"/>
+
+        <TextView
+            android:id="@+id/score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/health"
+            android:layout_toStartOf="@id/restartButton"
+            android:background="@null"
+            android:textColor="@color/colorBlack"
+            android:textSize="36sp"
+            android:fontFamily="@font/ribeye_marrow"/>
 
     </RelativeLayout>
 
