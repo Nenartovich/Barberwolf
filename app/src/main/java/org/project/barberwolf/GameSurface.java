@@ -288,7 +288,6 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     public void draw(Canvas canvas) {
         super.draw(canvas);
         canvas.drawBitmap(backgroundBitmap, 0, 0, null);
-
         GameField field = (GameField) this.getContext();
 
         field.getHealthView().setText("Health: " + this.health);
