@@ -31,7 +31,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     public Bitmap sheepBitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.sheep);
     public Bitmap cutSheepBitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.cut_sheep);
     public Bitmap backgroundBitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.background);
-
+    public Bitmap mountainsBitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.moutains);
     private int obstacleWidth = 0;
 
     int health = this.getResources().getInteger(R.integer.maxHealth);
@@ -288,6 +288,8 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     public void draw(Canvas canvas) {
         super.draw(canvas);
         canvas.drawBitmap(backgroundBitmap, 0, 0, null);
+        canvas.drawBitmap(mountainsBitmap, this.getWidth() - mountainsBitmap.getWidth(),
+                this.getHeight() - mountainsBitmap.getHeight(), null);
         GameField field = (GameField) this.getContext();
 
         field.getHealthView().setText("Health: " + this.health);
