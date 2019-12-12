@@ -26,12 +26,18 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     private Wolf wolf = null;
     private final List<Obstacle> obstaclesList = new ArrayList<>();
 
-    public Bitmap grassBitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.grass);
-    public Bitmap obstacleBitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.obtacle);
-    public Bitmap sheepBitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.sheep);
-    public Bitmap cutSheepBitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.cut_sheep);
-    public Bitmap backgroundBitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.background);
-    public Bitmap mountainsBitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.mountains2);
+    public Bitmap grassBitmap = BitmapFactory
+            .decodeResource(this.getResources(), R.drawable.grass);
+    public Bitmap obstacleBitmap = BitmapFactory
+            .decodeResource(this.getResources(), R.drawable.obtacle);
+    public Bitmap sheepBitmap = BitmapFactory
+            .decodeResource(this.getResources(), R.drawable.sheep);
+    public Bitmap cutSheepBitmap = BitmapFactory
+            .decodeResource(this.getResources(), R.drawable.cut_sheep);
+    public Bitmap backgroundBitmap = BitmapFactory
+            .decodeResource(this.getResources(), R.drawable.background);
+    public Bitmap backgroundTreesBitmap = BitmapFactory
+            .decodeResource(this.getResources(), R.drawable.background_trees);
     private int obstacleWidth = 0;
 
     int health = this.getResources().getInteger(R.integer.maxHealth);
@@ -169,7 +175,8 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
             float rightVolume = 0.15f;
 
             int index = getRandomNumber(sheepSoundIds.size());
-            this.soundPool.play(this.sheepSoundIds.get(index), leftVolume, rightVolume, 1, 0, 1f);
+            this.soundPool.play(this.sheepSoundIds
+                    .get(index), leftVolume, rightVolume, 1, 0, 1f);
         }
     }
 
@@ -179,7 +186,8 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
             float rightVolume = 0.15f;
 
             int index = getRandomNumber(wolfSoundIds.size());
-            this.soundPool.play(this.wolfSoundIds.get(index), leftVolume, rightVolume, 1, 0, 1f);
+            this.soundPool.play(this.wolfSoundIds
+                    .get(index), leftVolume, rightVolume, 1, 0, 1f);
         }
     }
 
@@ -288,8 +296,8 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     public void draw(Canvas canvas) {
         super.draw(canvas);
         canvas.drawBitmap(backgroundBitmap, 0, 0, null);
-        canvas.drawBitmap(mountainsBitmap, 0,
-                this.getHeight() - mountainsBitmap.getHeight(), null);
+        canvas.drawBitmap(backgroundTreesBitmap, 0,
+                this.getHeight() - backgroundTreesBitmap.getHeight(), null);
         GameField field = (GameField) this.getContext();
 
         field.getHealthView().setText("Health: " + this.health);
@@ -312,7 +320,6 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
         this.gameThread.setRunning(true);
         this.gameThread.start();
     }
-
 
     public void setObstacleWidth(int width) {
         obstacleWidth = width;
