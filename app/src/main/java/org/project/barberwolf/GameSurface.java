@@ -38,6 +38,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
             .decodeResource(this.getResources(), R.drawable.background);
     public Bitmap backgroundTreesBitmap = BitmapFactory
             .decodeResource(this.getResources(), R.drawable.background_trees);
+    public Bitmap poofBitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.poof);
     private int obstacleWidth = 0;
 
     int health = this.getResources().getInteger(R.integer.maxHealth);
@@ -298,6 +299,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
         canvas.drawBitmap(backgroundBitmap, 0, 0, null);
         canvas.drawBitmap(backgroundTreesBitmap, 0,
                 this.getHeight() - backgroundTreesBitmap.getHeight(), null);
+        canvas.drawBitmap(poofBitmap, -2500, 500, null);
         GameField field = (GameField) this.getContext();
 
         field.getHealthView().setText("Health: " + this.health);
