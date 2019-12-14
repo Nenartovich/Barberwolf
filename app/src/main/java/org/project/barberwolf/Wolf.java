@@ -117,6 +117,7 @@ public class Wolf extends GameObject {
                         obstacle.setBitmap(gameSurface.cutSheepBitmap);
                         gameSurface.increaseScore();
                         obstacle.setCaughtFlag(true);
+                        gameSurface.initPoofCloud(obstacle.getX(), obstacle.getY());
                     }
                 } else {
                     gameSurface.reduceHealth();

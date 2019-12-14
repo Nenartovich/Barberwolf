@@ -25,6 +25,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     private final List<Grass> grassList = new ArrayList<>();
     private Wolf wolf = null;
     private final List<Obstacle> obstaclesList = new ArrayList<>();
+    private PoofCloud poofCloud = null;
 
     public Bitmap grassBitmap = BitmapFactory
             .decodeResource(this.getResources(), R.drawable.grass);
@@ -52,6 +53,8 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
 
     private boolean pause = false;
     private boolean gameOver = false;
+
+    private boolean makePoof = false;
 
     public GameSurface(Context context) {
         this(context, null);
@@ -98,7 +101,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
         this.wolf = new Wolf(this, wolfBitmap,
                 getResources().getInteger(R.integer.wolfInitX),
                 getHeight() - grassBitmap.getHeight() - wolfBitmap.getHeight() / 2);
-
+        this.poofCloud = new PoofCloud(this, poofBitmap, -100, -100);
 
         int coefficient = getResources().getInteger(R.integer.obstacleNormalCoef);
         int offset = getResources().getInteger(R.integer.obstacleOffset);
@@ -126,6 +129,16 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
 
         pause = false;
         gameOver = false;
+    }
+
+    public void initPoofCloud(int obstacleX, int obstacleY) {
+        makePoof = true;
+        poofCloud.x = obstacleX - (poofBitmap.getWidth() / 16 - sheepBitmap.getWidth()) / 2;
+        poofCloud.y = obstacleY - (poofBitmap.getHeight() - sheepBitmap.getHeight()) / 2;
+    }
+
+    public void setMakePoof(boolean flag) {
+        makePoof = flag;
     }
 
     private void initSoundPool() {
@@ -260,6 +273,10 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
         for (Obstacle obstacleElement : obstaclesList) {
             obstacleElement.update();
         }
+        if (makePoof) {
+            poofCloud.update();
+        }
+
     }
 
     public void printMessage(String messageString) {
@@ -299,7 +316,6 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
         canvas.drawBitmap(backgroundBitmap, 0, 0, null);
         canvas.drawBitmap(backgroundTreesBitmap, 0,
                 this.getHeight() - backgroundTreesBitmap.getHeight(), null);
-        canvas.drawBitmap(poofBitmap, -2500, 500, null);
         GameField field = (GameField) this.getContext();
 
         field.getHealthView().setText("Health: " + this.health);
@@ -312,6 +328,10 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
         wolf.draw(canvas);
         for (Obstacle obstacleElement : obstaclesList) {
             obstacleElement.draw(canvas);
+        }
+
+        if (makePoof) {
+            poofCloud.draw(canvas);
         }
     }
 
