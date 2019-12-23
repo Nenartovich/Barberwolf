@@ -160,7 +160,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
 
         backgroundSound = MediaPlayer.create(this.getContext(), R.raw.eminem);
         backgroundSound.setLooping(true);
-        backgroundSound.setVolume(0.15f, 0.15f);
+        backgroundSound.setVolume(0.05f, 0.05f);
         backgroundSound.start();
 
         sheepSoundIds.add(this.soundPool.load(this.getContext(), R.raw.sheep_caught_1, 1));
