@@ -12,6 +12,8 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class GameField extends AppCompatActivity implements SurfaceHolder.Callback {
+    public static boolean active = false;
+
     public static final int PRINT_MESSAGE = 1;
     public static final int HIDE_MESSAGE = 2;
     public static final int PRINT_HEALTH = 3;
@@ -32,6 +34,8 @@ public class GameField extends AppCompatActivity implements SurfaceHolder.Callba
 
         gameSurface = this.findViewById(R.id.gameSurface);
         gameSurface.getHolder().addCallback(this);
+
+        active = true;
 
         messageView = this.findViewById(R.id.message);
         healthView = this.findViewById(R.id.health);
@@ -75,6 +79,7 @@ public class GameField extends AppCompatActivity implements SurfaceHolder.Callba
         gameThread.quit();
         gameSurface = null;
         gameThread = null;
+        active = false;
     }
 
     public void onPauseClick(View view) {

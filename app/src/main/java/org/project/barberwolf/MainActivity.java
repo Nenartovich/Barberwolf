@@ -8,7 +8,6 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
-    private boolean started = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,8 +22,10 @@ public class MainActivity extends AppCompatActivity {
         newGameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, GameField.class);
-                startActivity(intent);
+                if (!GameField.active) {
+                    Intent intent = new Intent(MainActivity.this, GameField.class);
+                    startActivity(intent);
+                }
             }
         });
 
