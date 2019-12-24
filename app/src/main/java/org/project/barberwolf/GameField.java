@@ -1,59 +1,91 @@
 package org.project.barberwolf;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
+import android.view.SurfaceHolder;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class GameField extends AppCompatActivity {
+public class GameField extends AppCompatActivity implements SurfaceHolder.Callback {
+    public static final int PRINT_MESSAGE = 1;
+    public static final int HIDE_MESSAGE = 2;
+    public static final int PRINT_HEALTH = 3;
+    public static final int PRINT_SCORE = 4;
+
+    private GameSurface gameSurface;
+    private GameThread gameThread;
+    private TextView messageView;
+    private TextView healthView;
+    private TextView scoreView;
+    private Handler fieldHandler;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         this.setContentView(R.layout.game_field);
 
-        ImageButton pauseButton = findViewById(R.id.pauseButton);
-        ImageButton playButton = findViewById(R.id.playButton);
-        ImageButton restartButton = findViewById(R.id.restartButton);
+        gameSurface = this.findViewById(R.id.gameSurface);
+        gameSurface.getHolder().addCallback(this);
 
-        pauseButton.setOnClickListener(new View.OnClickListener() {
+        messageView = this.findViewById(R.id.message);
+        healthView = this.findViewById(R.id.health);
+        scoreView = this.findViewById(R.id.score);
+
+        fieldHandler = new Handler(Looper.getMainLooper()) {
+            @SuppressLint("SetTextI18n")
             @Override
-            public void onClick(View v) {
-                GameField.this.getGameSurface().setPause();
+            public void handleMessage(Message msg) {
+                switch (msg.what) {
+                    case PRINT_MESSAGE:
+                        messageView.setText((String) msg.obj);
+                        messageView.setVisibility(View.VISIBLE);
+                        break;
+                    case HIDE_MESSAGE:
+                        messageView.setVisibility(View.GONE);
+                        break;
+                    case PRINT_HEALTH:
+                        healthView.setText("Health: " + msg.obj);
+                        break;
+                    case PRINT_SCORE:
+                        scoreView.setText("Score: " + msg.obj);
+                }
             }
-        });
-
-        playButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                GameField.this.getGameSurface().setResume();
-            }
-        });
-
-        restartButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                GameField.this.getGameSurface().initSurface();
-            }
-        });
-
+        };
     }
 
-    GameSurface getGameSurface() {
-        return findViewById(R.id.gameSurface);
+    @Override
+    public void surfaceCreated(SurfaceHolder holder) {
+        gameThread = new GameThread(gameSurface, holder, fieldHandler);
+        gameThread.start();
     }
 
-    TextView getHealthView() {
-        return findViewById(R.id.health);
+    @Override
+    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
     }
 
-    TextView getScoreView() {
-        return findViewById(R.id.score);
+    @Override
+    public void surfaceDestroyed(SurfaceHolder holder) {
+        gameSurface.destroy();
+        gameThread.quit();
+        gameSurface = null;
+        gameThread = null;
     }
 
-    TextView getMessageView() {
-        return findViewById(R.id.message);
+    public void onPauseClick(View view) {
+        gameThread.pauseGame();
+    }
+
+    public void onResumeClick(View view) {
+        gameThread.resumeGame();
+    }
+
+    public void onRestartClick(View view) {
+        gameThread.restartGame();
     }
 }
