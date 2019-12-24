@@ -8,20 +8,19 @@ import android.graphics.Canvas;
 import android.media.AudioAttributes;
 import android.media.MediaPlayer;
 import android.media.SoundPool;
+import android.os.Handler;
+import android.os.Message;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
-import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.view.View;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
-    private GameThread gameThread;
-    private GameField gameField;
+public class GameSurface extends SurfaceView {
+    private Handler fieldHandler;
+
     private final List<Grass> grassList = new ArrayList<>();
     private Wolf wolf = null;
     private final List<Obstacle> obstaclesList = new ArrayList<>();
@@ -67,9 +66,11 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     public GameSurface(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         this.setFocusable(true);
-        this.getHolder().addCallback(this);
         this.initSoundPool();
-        this.gameField = (GameField) this.getContext();
+    }
+
+    void setFieldHandler(Handler fieldHandler) {
+        this.fieldHandler = fieldHandler;
     }
 
     public void initSurface() {
@@ -279,15 +280,24 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
 
     }
 
-    public void printMessage(String messageString) {
-        TextView message = gameField.getMessageView();
-        message.setText(messageString);
-        message.setVisibility(View.VISIBLE);
+    public void printHealth() {
+        Message message = Message.obtain(fieldHandler, GameField.PRINT_HEALTH, health);
+        fieldHandler.sendMessage(message);
+    }
+
+    public void printScore() {
+        Message message = Message.obtain(fieldHandler, GameField.PRINT_SCORE, score);
+        fieldHandler.sendMessage(message);
+    }
+
+    public void printMessage(String text) {
+        Message message = Message.obtain(fieldHandler, GameField.PRINT_MESSAGE, text);
+        fieldHandler.sendMessage(message);
     }
 
     public void hideMessage(){
-        TextView message = gameField.getMessageView();
-        message.setVisibility(View.GONE);
+        Message message = Message.obtain(fieldHandler, GameField.HIDE_MESSAGE);
+        fieldHandler.sendMessage(message);
     }
 
     public void setPause() {
@@ -316,10 +326,9 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
         canvas.drawBitmap(backgroundBitmap, 0, 0, null);
         canvas.drawBitmap(backgroundTreesBitmap, 0,
                 this.getHeight() - backgroundTreesBitmap.getHeight(), null);
-        GameField field = (GameField) this.getContext();
 
-        field.getHealthView().setText("Health: " + this.health);
-        field.getScoreView().setText("Score: " + this.score);
+        printHealth();
+        printScore();
 
         for (Grass grassElement : grassList) {
             grassElement.draw(canvas);
@@ -335,14 +344,6 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
         }
     }
 
-    @Override
-    public void surfaceCreated(SurfaceHolder holder) {
-        initSurface();
-        this.gameThread = new GameThread(this, holder);
-        this.gameThread.setRunning(true);
-        this.gameThread.start();
-    }
-
     public void setObstacleWidth(int width) {
         obstacleWidth = width;
     }
@@ -351,25 +352,13 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
         return obstacleWidth;
     }
 
-    @Override
-    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-        // Empty method
-    }
-
-    @Override
-    public void surfaceDestroyed(SurfaceHolder holder) {
-        try {
-            backgroundSound.stop();
-            for (int index : wolfSoundIds) {
-                soundPool.stop(index);
-            }
-            for (int index : sheepSoundIds) {
-                soundPool.stop(index);
-            }
-            this.gameThread.setRunning(false);
-            this.gameThread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+    public void destroy() {
+        backgroundSound.stop();
+        for (int index : wolfSoundIds) {
+            soundPool.stop(index);
+        }
+        for (int index : sheepSoundIds) {
+            soundPool.stop(index);
         }
     }
 }

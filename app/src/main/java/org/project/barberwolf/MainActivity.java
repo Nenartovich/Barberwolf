@@ -1,13 +1,15 @@
 package org.project.barberwolf;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 public class MainActivity extends AppCompatActivity {
+    private boolean started = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -16,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
         final Button newGameButton = findViewById(R.id.newGameButton);
         Button settingsButton = findViewById(R.id.settingsButton);
         Button exitButton = findViewById(R.id.exitButton);
+
 
         newGameButton.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -17,33 +17,36 @@
 
     <ImageButton
         android:id="@+id/pauseButton"
+        android:contentDescription="@string/gamePause"
         android:src="@drawable/pause_button"
         android:background="@null"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:onClick="onPauseClick"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:contentDescription="@string/gamePause"/>
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <ImageButton
         android:id="@+id/playButton"
+        android:contentDescription="@string/gamePause"
         android:src="@drawable/play_button"
         android:background="@null"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:onClick="onResumeClick"
         app:layout_constraintRight_toLeftOf="@id/pauseButton"
-        app:layout_constraintTop_toTopOf="parent"
-        android:contentDescription="@string/gamePause"/>
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <ImageButton
         android:id="@+id/restartButton"
+        android:contentDescription="@string/gamePause"
         android:src="@drawable/restart_button"
         android:background="@null"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:onClick="onRestartClick"
         app:layout_constraintRight_toLeftOf="@id/playButton"
-        app:layout_constraintTop_toTopOf="parent"
-        android:contentDescription="@string/gamePause"/>
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
         android:id="@+id/health"
