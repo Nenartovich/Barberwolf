@@ -8,4 +8,6 @@
     <string name="gameOver">Game Over</string>
     <string name="defaultHealth">Health: 10000</string>
     <string name="defaultScore">Score: 1000000</string>
+    <string name="volume">Volume: </string>
+    <string name="volume_key">volume</string>
 </resources>

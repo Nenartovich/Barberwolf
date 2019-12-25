@@ -26,6 +26,8 @@ public class GameSurface extends SurfaceView {
     private final List<Obstacle> obstaclesList = new ArrayList<>();
     private PoofCloud poofCloud = null;
 
+    private float volume = getResources().getInteger(R.integer.defaultVolume);
+
     public Bitmap grassBitmap = BitmapFactory
             .decodeResource(this.getResources(), R.drawable.grass);
     public Bitmap obstacleBitmap = BitmapFactory
@@ -66,7 +68,6 @@ public class GameSurface extends SurfaceView {
     public GameSurface(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         this.setFocusable(true);
-        this.initSoundPool();
     }
 
     void setFieldHandler(Handler fieldHandler) {
@@ -161,7 +162,7 @@ public class GameSurface extends SurfaceView {
 
         backgroundSound = MediaPlayer.create(this.getContext(), R.raw.eminem);
         backgroundSound.setLooping(true);
-        backgroundSound.setVolume(0.05f, 0.05f);
+        backgroundSound.setVolume(volume, volume);
         backgroundSound.start();
 
         sheepSoundIds.add(this.soundPool.load(this.getContext(), R.raw.sheep_caught_1, 1));
@@ -186,23 +187,17 @@ public class GameSurface extends SurfaceView {
 
     public void playSoundSheepCaught() {
         if (this.soundPoolLoaded) {
-            float leftVolume = 0.15f;
-            float rightVolume = 0.15f;
-
             int index = getRandomNumber(sheepSoundIds.size());
             this.soundPool.play(this.sheepSoundIds
-                    .get(index), leftVolume, rightVolume, 1, 0, 1f);
+                    .get(index), volume, volume, 1, 0, 1f);
         }
     }
 
     public void playSoundCryingWolf() {
         if (this.soundPoolLoaded) {
-            float leftVolume = 0.15f;
-            float rightVolume = 0.15f;
-
             int index = getRandomNumber(wolfSoundIds.size());
             this.soundPool.play(this.wolfSoundIds
-                    .get(index), leftVolume, rightVolume, 1, 0, 1f);
+                    .get(index), volume, volume, 1, 0, 1f);
         }
     }
 
@@ -348,11 +343,7 @@ public class GameSurface extends SurfaceView {
         obstacleWidth = width;
     }
 
-    public int getObstacleWidth() {
-        return obstacleWidth;
-    }
-
-    public void destroy() {
+    public void stopSound() {
         backgroundSound.stop();
         for (int index : wolfSoundIds) {
             soundPool.stop(index);
@@ -360,5 +351,18 @@ public class GameSurface extends SurfaceView {
         for (int index : sheepSoundIds) {
             soundPool.stop(index);
         }
+    }
+
+    public void setVolume(int volume) {
+        this.volume = volume / 100f;
+        initSoundPool();
+    }
+
+    public int getObstacleWidth() {
+        return obstacleWidth;
+    }
+
+    public void destroy() {
+        stopSound();
     }
 }

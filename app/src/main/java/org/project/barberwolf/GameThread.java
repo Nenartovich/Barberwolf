@@ -12,6 +12,7 @@ public class GameThread extends HandlerThread implements Handler.Callback {
     private static final int PAUSE = 1;
     private static final int RESUME = 2;
     private static final int RESTART = 3;
+    private static final int SET_VOLUME = 4;
 
     private GameSurface gameSurface;
     private SurfaceHolder surfaceHolder;
@@ -64,6 +65,9 @@ public class GameThread extends HandlerThread implements Handler.Callback {
             case RESTART:
                 gameSurface.initSurface();
                 break;
+            case SET_VOLUME:
+                gameSurface.setVolume((int) msg.obj);
+                break;
         }
 
         return true;
@@ -85,5 +89,10 @@ public class GameThread extends HandlerThread implements Handler.Callback {
 
     public void restartGame() {
         messageReceiver.sendEmptyMessage(RESTART);
+    }
+
+    public void setVolume(int volume) {
+        Message message = Message.obtain(messageReceiver, SET_VOLUME, volume);
+        messageReceiver.sendMessage(message);
     }
 }

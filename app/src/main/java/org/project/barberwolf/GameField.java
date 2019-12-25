@@ -19,6 +19,9 @@ public class GameField extends AppCompatActivity implements SurfaceHolder.Callba
     public static final int PRINT_HEALTH = 3;
     public static final int PRINT_SCORE = 4;
 
+    private String VOLUME_KEY;
+    private int DEFAULT_VOLUME;
+
     private GameSurface gameSurface;
     private GameThread gameThread;
     private TextView messageView;
@@ -34,6 +37,10 @@ public class GameField extends AppCompatActivity implements SurfaceHolder.Callba
 
         gameSurface = this.findViewById(R.id.gameSurface);
         gameSurface.getHolder().addCallback(this);
+
+
+        VOLUME_KEY = this.getResources().getString(R.string.volume_key);
+        DEFAULT_VOLUME = this.getResources().getInteger(R.integer.defaultVolume);
 
         active = true;
 
@@ -67,6 +74,8 @@ public class GameField extends AppCompatActivity implements SurfaceHolder.Callba
     public void surfaceCreated(SurfaceHolder holder) {
         gameThread = new GameThread(gameSurface, holder, fieldHandler);
         gameThread.start();
+        gameThread.setVolume(getSharedPreferences("Settings", MODE_PRIVATE)
+                .getInt(VOLUME_KEY, DEFAULT_VOLUME));
     }
 
     @Override

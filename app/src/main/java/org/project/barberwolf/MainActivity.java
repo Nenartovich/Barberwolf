@@ -18,7 +18,6 @@ public class MainActivity extends AppCompatActivity {
         Button settingsButton = findViewById(R.id.settingsButton);
         Button exitButton = findViewById(R.id.exitButton);
 
-
         newGameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -32,7 +31,11 @@ public class MainActivity extends AppCompatActivity {
         settingsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Go to the settings screen
+                if (!SettingsActivity.active) {
+                    Intent intent = new Intent(MainActivity.this,
+                            SettingsActivity.class);
+                    startActivity(intent);
+                }
             }
         });
 
